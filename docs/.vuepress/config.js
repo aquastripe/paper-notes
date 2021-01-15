@@ -2,9 +2,6 @@ module.exports = {
     title: '論文筆記',
     description: '電腦視覺與深度學習論文筆記',
     base: '/paper-notes/',
-    head: [
-      ['meta', { name: "viewport", content: "width=device-width,user-scaleble=0,initial-scale=1.0,maximum-scale=1.0" }],
-    ],
     locales: {
       '/': {
         lang: 'zh-TW',
@@ -59,7 +56,10 @@ module.exports = {
       ]
     },
     markdown: {
-      lineNumbers: true
-    }
+      lineNumbers: true,
+    },
+    plugins: [
+      'mathjax'
+    ]
   }
   
