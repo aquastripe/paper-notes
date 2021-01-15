@@ -1,3 +1,9 @@
+---
+tags:
+    - 2019
+    - CVPR
+    - Data Augmentation
+---
 # AutoAugment: Learning Augmentation Strategies from Data
 
 `2019` `CVPR` `Data Augmentation`
