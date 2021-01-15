@@ -29,13 +29,13 @@ module.exports = {
               '2019/auto-augment-learning-augmentation-strategies-from-data'
           ],
         },
-        {
-          title: '2017',
-          collapsable: false,
-          children: [
-              '2017/attention-is-all-you-need'
-          ],
-        }
+        // {
+        //   title: '2017',
+        //   collapsable: false,
+        //   children: [
+        //     '2017/attention-is-all-you-need',
+        //   ],
+        // }
       ],
       nav: [
         { text: 'Home', link: '/' },
