@@ -29,6 +29,10 @@ module.exports = {
       ],
       tags: [
         '2017',
+        '2018',
+        '2019',
+        '2020',
+        'CVPR',
         'NeurIPS',
         'NLP',
         'Attention',
