@@ -20,7 +20,7 @@ tags:
 
 ## AutoAugment: Searching for best Augmentation policies Directly on the Dataset of Interest
 
-![](../assets/fig/2019/auto-augment-learning-augmentation-strategies-from-data/1.png)
+<img src="../assets/fig/2019/auto-augment-learning-augmentation-strategies-from-data/1.png" width="80%">
 
 尋找最好的 augmentation policy（擴增策略）的問題定義為 discrete search problem（離散搜尋問題）。方法包含兩個部份：
 1. 搜尋演算法（在本篇實作上是 controller RNN）
