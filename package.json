@@ -14,7 +14,6 @@
     "docs:build": "vuepress build docs"
   },
   "dependencies": {
-    "markdown-it-katex": "^2.0.3",
     "vuepress-plugin-mathjax": "^1.2.8"
   }
 }
