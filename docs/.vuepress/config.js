@@ -28,14 +28,20 @@ module.exports = {
         { text: 'Github', link: 'https://github.com/aquastripe/paper-notes' }
       ],
       tags: [
+        // years
         '2017',
         '2018',
         '2019',
         '2020',
+        
+        // conference, journel
         'CVPR',
         'NeurIPS',
+
+        // topic
         'NLP',
         'Attention',
+        'Data Augmentation',
       ]
     },
     markdown: {
