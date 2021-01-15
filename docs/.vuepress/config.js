@@ -15,6 +15,20 @@ module.exports = {
       sidebarDepth: 0,
       sidebar: [
         ['/', 'Preface'],
+        // {
+        //   title: '2020',
+        //   collapsable: false,
+        //   children: [
+
+        //   ],
+        // },
+        {
+          title: '2019',
+          collapsable: false,
+          children: [
+              '2019/auto-augment-learning-augmentation-strategies-from-data'
+          ],
+        },
         {
           title: '2017',
           collapsable: false,
