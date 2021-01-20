@@ -6,7 +6,9 @@ tags:
 ---
 # AutoAugment: Learning Augmentation Strategies from Data
 
-`2019` `CVPR` `Data Augmentation`
+<Badge text="2019" type="year" vertical="middle"/>
+<Badge text="CVPR" type="published-on" vertical="middle"/>
+<Badge text="Data Augmentation" type="info" vertical="middle"/>
 
 論文連結：[https://arxiv.org/abs/1805.09501](https://arxiv.org/abs/1805.09501)
 
