@@ -13,10 +13,10 @@ module.exports = {
       sidebar: [
         ['/', 'Preface'],
         {
-          title: '2020',
+          title: '2021',
           collapsable: false,
           children: [
-            '2020/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale'
+            '2021/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale'
           ],
         },
         {
@@ -44,15 +44,20 @@ module.exports = {
         '2018',
         '2019',
         '2020',
+        '2021',
         
         // conference, journel
         'CVPR',
         'NeurIPS',
+        'ICLR',
 
         // topic
         'NLP',
         'Attention',
         'Data Augmentation',
+        'Image Recognition',
+        'Vision Transformer',
+        'ViT',
       ]
     },
     markdown: {

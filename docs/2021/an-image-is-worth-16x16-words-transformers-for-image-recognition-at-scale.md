@@ -1,6 +1,6 @@
 ---
 tags:
-   - 2020
+   - 2021
    - ICLR
    - Image Recognition
    - Transformer
@@ -10,7 +10,7 @@ tags:
 
 # An Image is Worth 16x16 Words: Transformer for Image Recognition at Scale
 
-<Badge text='2020' type='year' vertical='middle'/>
+<Badge text='2021' type='year' vertical='middle'/>
 <Badge text='ICLR' type='published-on' vertical='middle'/>
 <Badge text='Image Recognition' type='info' vertical='middle'/>
 <Badge text='Transformer' type='info' vertical='middle'/>
@@ -92,7 +92,7 @@ Naive 的 self-attention 應用：讓一個 pixel 和其他所有的 pixels 一�
 
 ### Vision Transformer (ViT)
 
-![](../assets/fig/2020/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/1.png)
+![](../assets/fig/2021/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/1.png)
 
 標準的 Transformer 接收 1D 的序列 token embeddings 資料作為輸入。為了處理 2D 的影像，利用 reshape $x \in R^{H \times W \times C}$ into a sequence of flattened 2D patches $\mathbf{x}_{p} \in R^{N \times (P^{2} \cdot C)}$。
 - $(H, W)$: 原本影像的解析度
@@ -125,7 +125,7 @@ Encoder 包含：
 - Layernorm (LN) 在每個 block 之前
 - Residual connections 在每個 block 之後
 
-[](../assets/fig/2020/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/eq-1-4.png)
+[](../assets/fig/2021/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/eq-1-4.png)
 
 數學式的解讀：
 - $\mathbf{x}_p^i$: 輸入的第 i 個 patch
@@ -172,7 +172,7 @@ three groups:
 
 #### Model Variants
 
-![](../assets/fig/2020/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/tab-1.png)
+![](../assets/fig/2021/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/tab-1.png)
 
 #### Training & Fine-Tuning
 
