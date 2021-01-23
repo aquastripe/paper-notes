@@ -64,7 +64,11 @@ module.exports = {
       lineNumbers: true,
     },
     plugins: [
-      'mathjax'
+      // 'mathjax',
+      '@maginapp/vuepress-plugin-katex',
+      {
+        delimiters: 'dollars'
+      },
     ]
   }
   
