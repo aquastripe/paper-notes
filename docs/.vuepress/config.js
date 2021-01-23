@@ -12,13 +12,13 @@ module.exports = {
       sidebarDepth: 0,
       sidebar: [
         ['/', 'Preface'],
-        // {
-        //   title: '2020',
-        //   collapsable: false,
-        //   children: [
-
-        //   ],
-        // },
+        {
+          title: '2021',
+          collapsable: false,
+          children: [
+            '2021/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale'
+          ],
+        },
         {
           title: '2019',
           collapsable: false,
@@ -44,22 +44,31 @@ module.exports = {
         '2018',
         '2019',
         '2020',
+        '2021',
         
         // conference, journel
         'CVPR',
         'NeurIPS',
+        'ICLR',
 
         // topic
         'NLP',
         'Attention',
         'Data Augmentation',
+        'Image Recognition',
+        'Vision Transformer',
+        'ViT',
       ]
     },
     markdown: {
       lineNumbers: true,
     },
     plugins: [
-      'mathjax'
+      // 'mathjax',
+      '@maginapp/vuepress-plugin-katex',
+      {
+        delimiters: 'dollars'
+      },
     ]
   }
   
