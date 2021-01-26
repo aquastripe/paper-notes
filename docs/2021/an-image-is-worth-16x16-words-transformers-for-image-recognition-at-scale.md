@@ -264,6 +264,10 @@ report the number of TPUv3-core-days taken to pre-train each of them, that is, t
 - ViT-H/14 性能更好，而且計算量還是比 SOTA 更少
 - 不過其他 hyper-parameters 也會影響訓練結果，所以在 Section 4.4 有討論更詳細比較結果。
 
+![](../assets/fig/2021/an-image-is-worth-16x16-words/2.png)
+
+從 Figure 2 可以看出，在 VTAB tasks 上每一項 ViT-H/14 的結果都是最好的。
+
 ### Pre-training Data Requirements
 
 討論 dataset size 的重要性
