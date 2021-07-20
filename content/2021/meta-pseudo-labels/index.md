@@ -42,7 +42,7 @@ Pseudo Labels 是一種 self-training 方法，其作法如下：
 
 ### Drawback
 
-由 teacher network 產生的 pseudo，以直覺來看當然不是 100% 準確的。這會造成：
+由 teacher network 產生的 pseudo labels，以直覺來看當然不是 100% 準確的。這會造成：
 - 如果 pseudo labels 不準確，那 student network 就會用不準確的 labels 進行訓練，想當然的結果就會不好。想想這句話："Garbage in, garbage out." 
 - Student network 的結果無法明顯的好過 teacher network。
 
