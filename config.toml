@@ -1,7 +1,7 @@
 baseURL = "https://aquastripe.github.io/paper-notes/"
 languageCode = "zh-TW"
 title = "論文筆記"
-theme = "hugo-geekdoc"
+theme = "geekdoc"
 hasCJKLanguage = true
 
 pluralizeListTitles = false
