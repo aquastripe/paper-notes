@@ -10,8 +10,8 @@ tags: [CVPR, self-training]
 
 ![width:72px](figures/0.png)
 
-- 論文連結：[[arXiv](https://arxiv.org/abs/2003.10580)]
-- 程式碼連結：[[Papers With Code](https://paperswithcode.com/paper/meta-pseudo-labels)] [[Google Research](https://github.com/google-research/google-research/tree/master/meta_pseudo_labels)] [[MPL-pytorch](https://github.com/kekmodel/MPL-pytorch)]
+- Paper: [[arXiv](https://arxiv.org/abs/2003.10580)]
+- Code: [[Papers With Code](https://paperswithcode.com/paper/meta-pseudo-labels)] [[Google Research](https://github.com/google-research/google-research/tree/master/meta_pseudo_labels)] [[MPL-pytorch](https://github.com/kekmodel/MPL-pytorch)]
 
 {{< toc >}}
 
