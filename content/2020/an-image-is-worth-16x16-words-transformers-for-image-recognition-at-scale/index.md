@@ -1,7 +1,7 @@
 ---
 title: "An image is worth 16x16 words: Transformers for image recognition at scale"
 date: 2021-06-22T23:13:41+08:00
-draft: true
+draft: false
 math: true
 tags: [ICLR]
 ---
