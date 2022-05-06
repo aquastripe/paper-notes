@@ -1,12 +1,12 @@
 ---
-title: "An image is worth 16x16 words: Transformers for image recognition at scale"
-date: 2021-06-22T23:13:41+08:00
-draft: false
-math: true
-tags: [ICLR]
+tags:
+  - ICLR
+  - 2020
+  - VisionTransformer
+  - ViT
 ---
 
-{{< toc >}}
+# An image is worth 16x16 words: Transformers for image recognition at scale
 
 ## Introduction
 
@@ -67,7 +67,7 @@ Naive 的 self-attention 應用：讓一個 pixel 和其他所有的 pixels 一�
 
 ### Vision Transformer (ViT)
 
-![](figs/1.png)
+![](../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/1.png)
 
 標準的 Transformer 接收 1D 的序列 token embeddings 資料作為輸入。為了處理 2D 的影像，利用 reshape $x \in R^{H \times W \times C}$ into a sequence of flattened 2D patches $\mathbf{x}_{p} \in R^{N \times (P^{2} \cdot C)}$。
 - $(H, W)$: 原本影像的解析度
@@ -135,12 +135,12 @@ Vision Transformer 可以處理任意的序列長度，但是 pre-trained positi
 
 注意：解析度的調整和擷取 patch 的方式是這個 Vision Transformer 模型中唯一對於 2D 影像結構的**歸納偏誤（Inductive Bias）**。
 
-::: tip Inductive Bias
-In machine learning, one aims to construct algorithms that are able to learn to predict a certain target output. To achieve this, the learning algorithm is presented some training examples that demonstrate the intended relation of input and output values. Then the learner is supposed to approximate the correct output, even for examples that have not been shown during training. Without any additional assumptions, this problem cannot be solved since unseen situations might have an arbitrary output value. The kind of necessary assumptions about the nature of the target function are subsumed in the phrase inductive bias.[1][2]
-  - [1]: Mitchell, T. M. (1980), *The need for biases in learning generalizations*, CBM-TR 5-110, New Brunswick, New Jersey, USA: Rutgers University, CiteSeerX 10.1.1.19.5466
-  - [2]: DesJardins, M.; Gordon, D. F. (1995), *Evaluation and selection of biases in machine learning*, Machine Learning Journal, 5:–7
+!!! Inductive Bias
 
-:::
+    In machine learning, one aims to construct algorithms that are able to learn to predict a certain target output. To achieve this, the learning algorithm is presented some training examples that demonstrate the intended relation of input and output values. Then the learner is supposed to approximate the correct output, even for examples that have not been shown during training. Without any additional assumptions, this problem cannot be solved since unseen situations might have an arbitrary output value. The kind of necessary assumptions about the nature of the target function are subsumed in the phrase inductive bias.[1][2]
+    
+    - [1]: Mitchell, T. M. (1980), *The need for biases in learning generalizations*, CBM-TR 5-110, New Brunswick, New Jersey, USA: Rutgers University, CiteSeerX 10.1.1.19.5466
+    - [2]: DesJardins, M.; Gordon, D. F. (1995), *Evaluation and selection of biases in machine learning*, Machine Learning Journal, 5:–7
 
 ## Experiments
 
@@ -176,7 +176,7 @@ VTAB 定義一個好的 **visual representation** 是能夠在很少量的資料
 
 根據 BERT (Devlin et al., 2019) 來設定 ViT，如 Table 1。
 
-![](figs/tab-1.png)
+![](../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/tab-1.png)
 
 Base 和 Large 直接從 BERT 抄來的，然後另外再使用更大的 Huge 設定。
 
@@ -230,7 +230,7 @@ We report results on downstream datasets either through few-shot or fine-tuning 
 > All models were trained on TPUv3 hardware, and we
 report the number of TPUv3-core-days taken to pre-train each of them, that is, the number of TPUv3 cores (2 per chip) used for training multiplied by the training time in days.
 
-![](figs/tab-2.png)
+![](../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/tab-2.png)
 
 從 Table 2 可以看出
 - ViT-L/16 model pre-trained on JFT-300M 暴打 BiT-L，其中 ViT-L/16 訓練所需要的計算量更少
@@ -247,7 +247,7 @@ report the number of TPUv3-core-days taken to pre-train each of them, that is, t
 2. Train our models on random subsets of 9M, 30M, and 90M as well as the full JFT-
 300M dataset
 
-![](figs/3-4.png)
+![](../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/3-4.png)
 
 Figure 3 實驗了從各種 dataset 訓練，然後 fine-tune 到 ImageNet 的結果。從實驗結果可以看出
 - 在 ImageNet 上面 pre-trained，ViT-Large 比 ViT-Base 效果還差。
@@ -296,8 +296,8 @@ Pre-training 的運算量 (單位: exaFLOPs) 和 transfer accuracy 的關係，�
 
 > (for hybrids, the number at the end of the model name stands not for the patch size, but for the total dowsampling ratio in the ResNet backbone)
 
-![](figs/5.png)
-![](figs/tab-6.png)
+![](../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/5.png)
+![](../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/tab-6.png)
 
 從結果可以看出:
 - 在 performance/compute trade-off (可以理解成 CP 值) ViT 暴打 ResNets。相同的性能，運算量大約少 2-4 倍。
@@ -306,7 +306,7 @@ Pre-training 的運算量 (單位: exaFLOPs) 和 transfer accuracy 的關係，�
 
 ### Inspecting Vision Transformer
 
-![](figs/7.png)
+![](../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/7.png)
 
 Eq (1):
 
@@ -333,7 +333,7 @@ Self-attention 讓 ViT 從整張影像整合資訊，即使在最低層的 layer
 
 - analogous: 類似的，相似的
 
-![](figs/6.png)
+![](../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/6.png)
 
 ### Self-Supervision
 
@@ -353,8 +353,8 @@ Transformers 擁有良好的擴充性 (scalability) 和 自我監督預訓練學
 
 ## Appendix
 
-![](figs/9.png)
-![](figs/10.png)
+![](../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/9.png)
+![](../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/10.png)
 
 ### A. Multihead Self-Attention
 
@@ -384,7 +384,7 @@ $$
 
 #### B.1 Training
 
-![](figs/tab-3.png)
+![](../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/tab-3.png)
 
 Regularization 是訓練在 ImageNet dataset 的關鍵。Dropout 用在每個 (除了 qkv-projection) dense layer。混合模型使用相同的設定。輸入影像的解析度是 $224^2$。
 
@@ -399,7 +399,7 @@ resolution (running fine-tuning at different resolution than training is common 
 >
 > For VTAB we follow the protocol in Kolesnikov et al. (2020), and use the same hyperparameter setting for all tasks. We use a learning rate of 0.01 and train for 2500 steps (Tab. 4). We chose this setting by running a small sweep over two learning rates and two schedules, and selecting the setting with the highest VTAB score on the 200-example validation sets. We follow the pre-processing used in Kolesnikov et al. (2020), except that we do not use task-specific input resolutions. Instead we find that Vision Transformer benefits most from a high resolution (384 × 384) for all tasks.
 
-![](figs/tab-4.png)
+![](../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/tab-4.png)
 
 ##### B.1.2 Self-Supervision
 
@@ -412,8 +412,8 @@ resolution (running fine-tuning at different resolution than training is common 
 ### C. Additional Results
 
 
-![](figs/tab-6.png)
-![](figs/5.png)
+![](../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/tab-6.png)
+![](../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/5.png)
 
 
 > We report detailed results corresponding to the figures presented in the paper. Table 5 corresponds to Figure 3 from the paper and shows transfer performance of different ViT models pre-trained on datasets of increasing size: ImageNet, ImageNet-21k, and JFT-300M. Table 6 corresponds to Figure 5 from the paper and shows the transfer performance of ViT, ResNet, and hybrid models of varying size, as well as the estimated computational cost of their pre-training.

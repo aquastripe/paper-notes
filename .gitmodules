@@ -1,6 +1,0 @@
-[submodule "themes/hugo-geekdoc"]
-	path = themes/geekdoc/
-	url = https://github.com/aquastripe/hugo-geekdoc.git
-[submodule "themes/geekdoc"]
-	path = themes/geekdoc
-	url = git@github.com:aquastripe/hugo-geekdoc.git

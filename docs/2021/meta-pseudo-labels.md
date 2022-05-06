@@ -1,19 +1,16 @@
 ---
-title: "Meta Pseudo Labels"
-date: 2021-07-12T07:16:37+08:00
-draft: false
-math: true
-tags: [CVPR, self-training]
+tags:
+    - CVPR
+    - 2021
+    - Self Training
 ---
 
-[CVPR] [2021] [self-training]
+# Meta Pseudo Labels
 
-![width:72px](figures/0.png)
+![width:72px](../../assets/images/meta-pseudo-labels/figures/0.png)
 
 - Paper: [[arXiv](https://arxiv.org/abs/2003.10580)]
 - Code: [[Papers With Code](https://paperswithcode.com/paper/meta-pseudo-labels)] [[Google Research](https://github.com/google-research/google-research/tree/master/meta_pseudo_labels)] [[MPL-pytorch](https://github.com/kekmodel/MPL-pytorch)]
-
-{{< toc >}}
 
 這篇論文主要貢獻：
 1. 提出一個新的 Pseudo Labeling 方法，可以學習 teacher network 的模型參數。
@@ -23,11 +20,10 @@ tags: [CVPR, self-training]
 1. 借用 [40, 15] 的 meta-learning 方法，透過 one-step gradient 進行更新參數，來近似原本 multi-step 的結果。
 2. 利用 1. 的作法，讓原本 Pseudo Labels 的 teacher-student 的架構中的 teacher network 模型參數可以訓練。
 
-{{< hint info >}}
-**References**
-- [40]: Hanxiao Liu, Karen Simonyan, and Yiming Yang. Darts: Differentiable architecture search. In *International Conference on Learning Representations*, 2019. 2, 8
-- [15]: Chelsea Finn, Pieter Abbeel, and Sergey Levine. Model-agnostic meta-learning for fast adaptation of deep networks. In *International Conference on Machine Learning*, 2017. 2
-{{< /hint >}}
+!!! References
+
+   - [40]: Hanxiao Liu, Karen Simonyan, and Yiming Yang. Darts: Differentiable architecture search. In *International Conference on Learning Representations*, 2019. 2, 8
+   - [15]: Chelsea Finn, Pieter Abbeel, and Sergey Levine. Model-agnostic meta-learning for fast adaptation of deep networks. In *International Conference on Machine Learning*, 2017. 2
 
 ## Pseudo Labels
 
@@ -48,20 +44,20 @@ Pseudo Labels 是一種 self-training 方法，其作法如下：
 
 這件事情在先前的研究中被發現，稱為 confirmation bias (確認偏誤)。
 
-{{< hint info >}}
-**Confirmation bias**\
-Network predictions are, of course, sometimes incorrect. This situation is
-reinforced when incorrect predictions are used as labels for unlabeled samples, as
-it is the case in pseudo-labeling.
+!!! Confirmation bias
 
-Overfitting to incorrect pseudo-labels predicted by the network is known as
-confirmation bias. It is natural to think that reducing the confidence of the
-network on its predictions might alleviate this problem and improve
-generalization.
+    Network predictions are, of course, sometimes incorrect. This situation is
+    reinforced when incorrect predictions are used as labels for unlabeled samples, as
+    it is the case in pseudo-labeling.
 
-- [2]: ARAZO, Eric, et al. Pseudo-labeling and confirmation bias in deep semi-supervised learning. In: *2020 International Joint Conference on Neural Networks
-(IJCNN)*. IEEE, 2020. p. 1-8. 
-{{< /hint >}}
+    Overfitting to incorrect pseudo-labels predicted by the network is known as
+    confirmation bias. It is natural to think that reducing the confidence of the
+    network on its predictions might alleviate this problem and improve
+    generalization.
+
+    - [2]: ARAZO, Eric, et al. Pseudo-labeling and confirmation bias in deep semi-supervised learning. In: *2020 International Joint Conference on Neural Networks
+    (IJCNN)*. IEEE, 2020. p. 1-8. 
+
 
 ## Meta Pseudo Labels
 
@@ -69,7 +65,7 @@ generalization.
 
 ### Overview
 
-![](figures/1.png)
+![](../../assets/images/meta-pseudo-labels/figures/1.png)
 
 ### Notations
 
@@ -99,6 +95,7 @@ $$
     :=\mathcal{L}_{u}\left(\theta_{T}, \theta_{S}\right)
 }
 $$
+
 其中：
 - Pseudo target $T(x_u; θ_T)$ 是由 pre-trained teacher network 產生，其參數 $θ$ 是固定的。
 
@@ -118,10 +115,12 @@ $$
 
 所以，我們可以進一步的根據 $\theta_T$ 來最佳化 $\mathcal{L}_l$:
 
-$$\begin{aligned}
+$$
+\begin{aligned}
 \min_ {\theta_{T}} & \mathcal{L}_ {l}\left(\theta_ {S}^{\mathrm{PL}}\left(\theta_ {T}\right)\right) \newline
 \text { where } & \theta_ {S}^{\mathrm{PL}}\left(\theta_ {T}\right)=\underset{\theta_ {S}}{\operatorname{argmin}} \mathcal{L}_ {u}\left(\theta_ {T}, \theta_ {S}\right) .
-\end{aligned}$$
+\end{aligned}
+$$
 
 (數學式解讀：在 labeled dataset 中調整 teacher network 的參數來最小化 loss，其 student network 的參數是在 unlabeled dataset 中進行訓練。)
 
@@ -131,7 +130,9 @@ $$\begin{aligned}
 
 為了讓上面的計算式可行，本篇論文使用了 [40, 15] 關於 meta-learning 的論文，以 one-step gradient update 來近似本來應該要用 multi-step 更新的參數：
 
-$$\theta_{S}^{\mathrm{PL}}\left(\theta_{T}\right) \approx \theta_{S}-\eta_{S} \cdot \nabla_{\theta_{S}} \mathcal{L}_{u}\left(\theta_{T}, \theta_{S}\right)$$
+$$
+\theta_{S}^{\mathrm{PL}}\left(\theta_{T}\right) \approx \theta_{S}-\eta_{S} \cdot \nabla_{\theta_{S}} \mathcal{L}_{u}\left(\theta_{T}, \theta_{S}\right)
+$$
 
 其中：
 - $\eta$: the learning rate
@@ -151,10 +152,13 @@ $$
 
 Student network 參數更新後可以在 teacher network 中被重複利用：
 - Student: 取出一個 batch 的 unlabeled data，然後傳入 student 和 teacher network 取得預測結果。將 teacher network 的預測結果作為 pseudo labels 來計算 loss，並更新 student network 的參數：
+
     $$
     θ'_ S = θ_ S − \eta_ S ∇_ {θ_ S} \mathcal{L}_ u(θ_ T , θ_ S)
     $$
+
 - Teacher: 取出一個 batch 的 labeled data，然後傳入 student 和 teacher network 取得預測結果。將 student network 的預測結果與 labels (ground-truth) 來計算 loss 並更新 teacher network 的參數：
+
     $$
     \theta_{T}^{\prime} = \theta_{T}-\eta_{T}\nabla_{\theta_{T}} \mathcal{L}_{l}(\underbrace{\theta_{S}-\nabla_{\theta_{S}} \mathcal{L}_{u}\left(\theta_{T}, \theta_{S}\right)} _{= \theta_{S}^{\prime}}) = \theta_{T}-\eta_{T}\nabla_{\theta_{T}} \mathcal{L}_{l}(\theta_{S}^{\prime}).
     $$
@@ -173,12 +177,10 @@ Student network 參數更新後可以在 teacher network 中被重複利用：
 3. 之後，student network 只在 unlabeled dataset 上面訓練，使用 teacher network 產生的 pseudo labels。
 4. 最後，student network 在 labeled dataset 上面 fine-tune。
 
-{{< hint info >}}
-**Reference**
-- [76]: Hugo Touvron, Andrea Vedaldi, Matthijs Douze, and Hervé
-Jégou. Fixing the train-test resolution discrepancy: Fixeffi-
-cientnet. arXiv preprint arXiv:2003.08237, 2020. 7
-{{< /hint >}}
+!!! Reference
+
+    - [76] Hugo Touvron, Andrea Vedaldi, Matthijs Douze, and Hervé Jégou. Fixing the train-test resolution discrepancy: Fixefficientnet. arXiv preprint arXiv:2003.08237, 2020. 7
+
 
 ## Experiments
 
@@ -190,7 +192,7 @@ cientnet. arXiv preprint arXiv:2003.08237, 2020. 7
 
 ### Small Scale Experiments
 
-![](figures/2.png)
+![](../../assets/images/meta-pseudo-labels/figures/2.png)
 
 ### CIFAR-10-4K, SVHN-1K, and ImageNet-10% Experiments
 
@@ -200,13 +202,13 @@ cientnet. arXiv preprint arXiv:2003.08237, 2020. 7
 | **SVHN-1K**      	| 32x32            	| 1,000              	| 603,000              	| 26,032     	|
 | **ImageNet-10%** 	| 224x224          	| 128,000            	| 1,280,000            	| 50,000     	|
 
-![](tables/2.png)
+![](../../assets/images/meta-pseudo-labels/tables/2.png)
 
-### ResNet-50 Experiment
+### ResNet-50 Experiments
 
-![](tables/3.png)
+![](../../assets/images/meta-pseudo-labels/tables/3.png)
 
-### Large Scale Experiment
+### Large Scale Experiments
 
-![](tables/1.png)
-![](tables/4.png)
+![](../../assets/images/meta-pseudo-labels/tables/1.png)
+![](../../assets/images/meta-pseudo-labels/tables/4.png)
