@@ -2,6 +2,7 @@ site_name: 電腦視覺與深度學習的論文筆記
 
 theme:
   name: material
+  custom_dir: overrides
 
 markdown_extensions:
   - abbr
