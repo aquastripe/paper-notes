@@ -9,21 +9,26 @@ tags:
 
 ![width:72px](../../assets/images/meta-pseudo-labels/figures/0.png)
 
-- Paper: [[arXiv](https://arxiv.org/abs/2003.10580)]
-- Code: [[Papers With Code](https://paperswithcode.com/paper/meta-pseudo-labels)] [[Google Research](https://github.com/google-research/google-research/tree/master/meta_pseudo_labels)] [[MPL-pytorch](https://github.com/kekmodel/MPL-pytorch)]
+- Paper: [arXiv](https://arxiv.org/abs/2003.10580)
+- Code: 
+    - [Papers With Code](https://paperswithcode.com/paper/meta-pseudo-labels) 
+    - [Google Research](https://github.com/google-research/google-research/tree/master/meta_pseudo_labels) 
+    - [MPL-pytorch](https://github.com/kekmodel/MPL-pytorch)
 
 這篇論文主要貢獻：
+
 1. 提出一個新的 Pseudo Labeling 方法，可以學習 teacher network 的模型參數。
 2. 透過大量的實驗來驗證此方法的有效性，並且在 ImageNet 上面有 $90.2%$ top-1 準確率，達到 SOTA。
 
 方法的重點：
+
 1. 借用 [40, 15] 的 meta-learning 方法，透過 one-step gradient 進行更新參數，來近似原本 multi-step 的結果。
 2. 利用 1. 的作法，讓原本 Pseudo Labels 的 teacher-student 的架構中的 teacher network 模型參數可以訓練。
 
-!!! References
+!!! info "References"
 
-   - [40]: Hanxiao Liu, Karen Simonyan, and Yiming Yang. Darts: Differentiable architecture search. In *International Conference on Learning Representations*, 2019. 2, 8
-   - [15]: Chelsea Finn, Pieter Abbeel, and Sergey Levine. Model-agnostic meta-learning for fast adaptation of deep networks. In *International Conference on Machine Learning*, 2017. 2
+    - [40]: Hanxiao Liu, Karen Simonyan, and Yiming Yang. Darts: Differentiable architecture search. In *International Conference on Learning Representations*, 2019. 2, 8
+    - [15]: Chelsea Finn, Pieter Abbeel, and Sergey Levine. Model-agnostic meta-learning for fast adaptation of deep networks. In *International Conference on Machine Learning*, 2017. 2
 
 ## Pseudo Labels
 
