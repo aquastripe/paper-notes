@@ -1,7 +1,6 @@
 ---
 tags:
     - CVPR
-    - 2021
     - Self Training
 ---
 

@@ -1,7 +1,6 @@
 ---
 tags:
    - CVPR
-   - 2021
    - Representation Learning
 ---
 # Exploring Simple Siamese Representation Learning (SimSiam)

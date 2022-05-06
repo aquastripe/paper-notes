@@ -1,7 +1,6 @@
 ---
 tags:
   - ICLR
-  - 2020
   - VisionTransformer
   - ViT
 ---
