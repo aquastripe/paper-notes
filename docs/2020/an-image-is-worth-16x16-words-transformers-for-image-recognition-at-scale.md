@@ -30,6 +30,7 @@ tags:
 - GPT (Radford et al., 2018; 2019; Brown et al., 2020): uses language modeling as its pre-training task
 
 Naive 的 self-attention 應用：讓一個 pixel 和其他所有的 pixels 一一計算 attention。這樣做的問題是在真實影像上的計算複雜度過高。所以其他人嘗試近似的方法：
+
 - Parmar et al. (2018): 只在相鄰的區域計算 self-attention 而非全域。
 - Such local multi-head dot-product self attention blocks can completely replace convolutions (Ramachandran et al., 2019; Cordonnier et al., 2020; Zhao et al., 2020). 
 - Sparse Transformers (Child et al., 2019): employ scalable approximations to global self-attention in order to be applicable to images
@@ -70,6 +71,7 @@ Naive 的 self-attention 應用：讓一個 pixel 和其他所有的 pixels 一�
 ![](../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/1.png)
 
 標準的 Transformer 接收 1D 的序列 token embeddings 資料作為輸入。為了處理 2D 的影像，利用 reshape $x \in R^{H \times W \times C}$ into a sequence of flattened 2D patches $\mathbf{x}_{p} \in R^{N \times (P^{2} \cdot C)}$。
+
 - $(H, W)$: 原本影像的解析度
 - $C$: channels 數量
 - $(P, P)$: 每個 patch 的解析度
@@ -79,6 +81,7 @@ Naive 的 self-attention 應用：讓一個 pixel 和其他所有的 pixels 一�
 $D$ 是所有 layers 輸出的維度，所以輸入的 patches 利用一個 trainable linear projection 映射到這個維度，把這個 projection 輸出結果當作 patch embedding。
 
 類似 BERT 的 `[class]` token，這裡前置一個可學習的類別 embedding 在 patches ($z_0^0 = \mathbf{x}_{class}$)。Transformer encoder ($\mathbf{z}_L^0$) 的狀態當作 image representation $\mathbf{y}$。分類器 (classification head) 的實作方式，分別在
+
 1. pre-training time (預訓練階段): 一層 hidden layer 的 MLP
 2. fine-tuning time (微調階段): 一層 linear layer
 
@@ -93,6 +96,7 @@ $D$ 是所有 layers 輸出的維度，所以輸入的 patches 利用一個 trai
 #### Transformer Encoder
 
 Encoder 包含：
+
 - Multiheaded self-attention (MSA)
 - MLP blocks (Eq. 2, 3)
   - 兩層
@@ -110,6 +114,7 @@ $$
 $$
 
 數學式的解讀：
+
 - $\mathbf{x}_p^i$: 輸入的第 i 個 patch
 - $\mathbf{x}_{class}$: 類別的 embedding
   - 更細節的：如何做出 embedding? 使用一個矩陣 (類別數)x(embedding size)
@@ -166,6 +171,7 @@ three groups:
 > The benchmark consists of 19 tasks, drawn from a variety of domains, and with various semantics. All tasks are framed as classification problems to facilitate a consistent API for pre-trained models. Algorithms should not contain any task-dependent logic, for example, the same hyperparameter sweep should be used for all tasks. VTAB may also be used to evaluate techniques, other than representation learning, that improve performance across a variety of tasks: such as architectures, pre-processing functions, or optimizers.
 
 簡單來說，這個 Dataset 的特色是用來評估：
+
 - low-data: 少量的訓練資料
 - transfer to diverse tasks: 轉移到變化大的任務上
 - 1,000 training examples per task: 只有 1,000 筆訓練資料
@@ -183,10 +189,12 @@ Base 和 Large 直接從 BERT 抄來的，然後另外再使用更大的 Huge �
 模型表示法: ViT-L/16 代表使用 Large 的設定，然後影像解析度設定為 $16 \times 16$ 。須特別注意 Transformer 的序列長度和 patch size 的平方成反比。
 
 Baseline
+
 - ResNet (BiT): 使用 ResNet 然後把 Batch Normalization 改成 Group Normalization (Wu & He, 2018)，在加上 standardized convolutions (Salimans & Kingma, 2016)。這些改動有助於轉移性 (Kolesnikov et al., 2020)。
 - Hybrids: 用 $1 \times 1$ 的 patches 當作 intermediate feature maps 傳入 ViT 模型。
 
 為了試驗不同的序列長度 (給 ViT 的 feature maps):
+
 - 拿 ResNet50 stage 4 的輸出
 - 移除 stage 4，改放相同層數在 stage 3 (保持相同層數)，然後取出輸出。這個作法可以得到 4 倍長度的序列。
 
@@ -218,21 +226,23 @@ We report results on downstream datasets either through few-shot or fine-tuning 
 ### Comparison to State of the Art
 
 選手
+
 - ViT-H/14
 - ViT-L/16
 
 比較對象
+
 - Big Transfer (BiT) (Kolesnikov et al., 2020): which performs supervised transfer learning with large ResNets.
 - Noisy Student (Xie et al., 2020): a large EfficientNet trained using semi-supervised learning on ImageNet and JFT-300M with the labels removed.
   - SOTA on ImageNet
 
 訓練設備
-> All models were trained on TPUv3 hardware, and we
-report the number of TPUv3-core-days taken to pre-train each of them, that is, the number of TPUv3 cores (2 per chip) used for training multiplied by the training time in days.
+> All models were trained on TPUv3 hardware, and we report the number of TPUv3-core-days taken to pre-train each of them, that is, the number of TPUv3 cores (2 per chip) used for training multiplied by the training time in days.
 
 ![](../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/tab-2.png)
 
 從 Table 2 可以看出
+
 - ViT-L/16 model pre-trained on JFT-300M 暴打 BiT-L，其中 ViT-L/16 訓練所需要的計算量更少
 - ViT-H/14 性能更好，而且計算量還是比 SOTA 更少
 - 不過其他 hyper-parameters 也會影響訓練結果，所以在 Section 4.4 有討論更詳細比較結果。
@@ -240,22 +250,24 @@ report the number of TPUv3-core-days taken to pre-train each of them, that is, t
 ### Pre-training Data Requirements
 
 討論 dataset size 的重要性
+
 1. Pre-train ViT models on datasets of increasing size: ImageNet, ImageNet-21k, and JFT-300M (Figure 3)
   - weight decay
   - dropout
   - label smoothing
-2. Train our models on random subsets of 9M, 30M, and 90M as well as the full JFT-
-300M dataset
+2. Train our models on random subsets of 9M, 30M, and 90M as well as the full JFT-300M dataset
 
 ![](../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/3-4.png)
 
 Figure 3 實驗了從各種 dataset 訓練，然後 fine-tune 到 ImageNet 的結果。從實驗結果可以看出
+
 - 在 ImageNet 上面 pre-trained，ViT-Large 比 ViT-Base 效果還差。
 - 在 ImageNet-21k 上面 pre-trained，兩個效果差不多。
 - 在 JFT-300M 上面 pre-trained，模型越大效果越好。
 - 圖上灰色區域是 BiT 不同大小的效果，可以看出 BiT 在 ImageNet 效果最好，但在另外兩個 ViT 比較好。
 
 Figure 4 實驗了 JFT 在各種數量的 pre-training，然後在 ImageNet 上面進行 5-shot learning。實驗結果可以看出
+
 - ViT 在較小的 dataset 比 ResNet 的 visual representation 有更多過擬合
 - 在較大的 dataset ViT 效果較好
 
@@ -266,6 +278,7 @@ Figure 4 實驗了 JFT 在各種數量的 pre-training，然後在 ImageNet 上�
 Pre-training 的運算量 (單位: exaFLOPs) 和 transfer accuracy 的關係，如 Figure 5。
 
 模型設定:
+
 - ResNets
   - pre-trained for 7 epochs
     - R50x1
@@ -300,6 +313,7 @@ Pre-training 的運算量 (單位: exaFLOPs) 和 transfer accuracy 的關係，�
 ![](../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/tab-6.png)
 
 從結果可以看出:
+
 - 在 performance/compute trade-off (可以理解成 CP 值) ViT 暴打 ResNets。相同的性能，運算量大約少 2-4 倍。
 - Hybrid 在小運算量效果比 ViT 好一點，在大運算量差不多。
 - ViT 似乎沒有飽和，可能還可以更進一步使用更大的模型。
@@ -331,8 +345,6 @@ Self-attention 讓 ViT 從整張影像整合資訊，即使在最低層的 layer
 
 而且，attention distance 隨著網路的深度增加。我們也發現模型注意力落在和影像分類語意相關的區域，如 Figure 6。
 
-- analogous: 類似的，相似的
-
 ![](../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/6.png)
 
 ### Self-Supervision
@@ -346,6 +358,7 @@ Transformers 擁有良好的擴充性 (scalability) 和 自我監督預訓練學
 > While these initial results are encouraging, many challenges remain. One is to apply ViT to other computer vision tasks, such as detection and segmentation. Our results, coupled with those in Carion et al. (2020), indicate the promise of this approach. Another challenge is to continue exploring self-supervised pre-training methods. Our initial experiments show improvement from self-supervised pre-training, but there is still large gap between self-supervised and large-scale supervised pre-training. Finally, further scaling of ViT would likely lead to improved performance.
 
 尚未探索完畢的區域:
+
 - detection
 - segmentation
 - self-supervised pre-training (目前實驗結果跟 supervised pre-training 有很大差距)
@@ -380,6 +393,7 @@ Eq (8):
 $$
 \operatorname{MSA}(\mathbf{z})=\left[\operatorname{SA}_{1}(z) ; \operatorname{SA}_{2}(z) ; \cdots ; \mathrm{SA}_{k}(z)\right] \mathbf{U}_{m s a} \quad \mathbf{U}_{m s a} \in \mathbb{R}^{k \cdot D_{h} \times D}
 $$
+
 ### B. Experiment Details
 
 #### B.1 Training
@@ -417,22 +431,3 @@ resolution (running fine-tuning at different resolution than training is common 
 
 
 > We report detailed results corresponding to the figures presented in the paper. Table 5 corresponds to Figure 3 from the paper and shows transfer performance of different ViT models pre-trained on datasets of increasing size: ImageNet, ImageNet-21k, and JFT-300M. Table 6 corresponds to Figure 5 from the paper and shows the transfer performance of ViT, ResNet, and hybrid models of varying size, as well as the estimated computational cost of their pre-training.
-
-### D. Additional Analyses
-
-#### D.1 SGD vs. Adam for ResNets
-
-#### D.2 Transformer Shape
-
-#### D.3 Positional Embedding
-
-#### D.4 Empirical Computational Costs
-
-#### D.5 Axial Attention
-
-#### D.6 Attention Distance
-
-#### D.7 Attention Maps
-
-#### D.8 VTAB Breakdown
-
