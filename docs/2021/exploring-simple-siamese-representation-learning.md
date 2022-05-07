@@ -118,7 +118,7 @@ $$
 
 它的 gradient 會和 $\mathcal{D}(z_1,z_2)$ 相同，大小為一半。這種情況下，幾乎等同於沒有加入 stop-grad 機制，所以會發生 collapse。
 
-![](tables/1.png)
+![](../../assets/images/exploring-simple-siamese-representation-learning/tables/1.png)
 
 Table 1. 的實驗展示了 predictor MLP 的影響：
 
@@ -128,7 +128,7 @@ Table 1. 的實驗展示了 predictor MLP 的影響：
 
 ### Batch Size
 
-![](tables/2.png)
+![](../../assets/images/exploring-simple-siamese-representation-learning/tables/2.png)
 
 實驗設定：固定 SGD 演算法，learning rate 使用 linear scaling rule ($lr \times \text{BatchSize}/256$)。在 batch size $\ge 1024$ 使用 $10$ epochs of warm-up [14]。
 
@@ -138,7 +138,7 @@ Table 1. 的實驗展示了 predictor MLP 的影響：
 
 ### Batch Normalization
 
-![](tables/3.png)
+![](../../assets/images/exploring-simple-siamese-representation-learning/tables/3.png)
 
 從 Table 3. 結果發現：
 
@@ -308,7 +308,7 @@ $$
 
 結果如下：
 
-![](tables/4.png)
+![](../../assets/images/exploring-simple-siamese-representation-learning/tables/4.png)
 
 "+" 代表重製過，產生更好的結果（詳見附錄）。
 
@@ -318,7 +318,7 @@ SimSiam 使用更少的 batch size，沒有負樣本也沒有 momentum encoder�
 
 在 ImageNet 進行 pre-training，之後用到 object detection 和 instance segmentation。
 
-![](tables/5.png)
+![](../../assets/images/exploring-simple-siamese-representation-learning/tables/5.png)
 
 ### Methodology Comparisons
 
