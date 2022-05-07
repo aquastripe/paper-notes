@@ -157,9 +157,9 @@ $$
 Student network 參數更新後可以在 teacher network 中被重複利用：
 - Student: 取出一個 batch 的 unlabeled data，然後傳入 student 和 teacher network 取得預測結果。將 teacher network 的預測結果作為 pseudo labels 來計算 loss，並更新 student network 的參數：
 
-    $$
-    θ'_ S = θ_ S − \eta_ S ∇_ {θ_ S} \mathcal{L}_ u(θ_ T , θ_ S)
-    $$
+$$
+θ'_ S = θ_ S − \eta_ S ∇_ {θ_ S} \mathcal{L}_ u(θ_ T , θ_ S)
+$$
 
 - Teacher: 取出一個 batch 的 labeled data，然後傳入 student 和 teacher network 取得預測結果。將 student network 的預測結果與 labels (ground-truth) 來計算 loss 並更新 teacher network 的參數：
 
