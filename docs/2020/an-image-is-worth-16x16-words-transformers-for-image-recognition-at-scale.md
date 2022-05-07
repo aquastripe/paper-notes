@@ -5,7 +5,7 @@ tags:
   - ViT
 ---
 
-# An image is worth 16x16 words: Transformers for image recognition at scale
+# An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale
 
 ## Introduction
 
