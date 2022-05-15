@@ -1,0 +1,940 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.15">
+    
+    
+      
+        <title>Meta Pseudo Labels - 電腦視覺與深度學習的論文筆記</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.c382b1dc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.cc9b2e1e.min.css">
+        
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#meta-pseudo-labels" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="電腦視覺與深度學習的論文筆記" class="md-header__button md-logo" aria-label="電腦視覺與深度學習的論文筆記" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            電腦視覺與深度學習的論文筆記
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Meta Pseudo Labels
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="電腦視覺與深度學習的論文筆記" class="md-nav__button md-logo" aria-label="電腦視覺與深度學習的論文筆記" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    電腦視覺與深度學習的論文筆記
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        關於本站
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tags/" class="md-nav__link">
+        Tags
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          2020
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="2020" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          2020
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2020/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/" class="md-nav__link">
+        An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          2021
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="2021" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          2021
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exploring-simple-siamese-representation-learning/" class="md-nav__link">
+        Exploring Simple Siamese Representation Learning (SimSiam)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Meta Pseudo Labels
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Meta Pseudo Labels
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pseudo-labels" class="md-nav__link">
+    Pseudo Labels
+  </a>
+  
+    <nav class="md-nav" aria-label="Pseudo Labels">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#drawback" class="md-nav__link">
+    Drawback
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#meta-pseudo-labels_1" class="md-nav__link">
+    Meta Pseudo Labels
+  </a>
+  
+    <nav class="md-nav" aria-label="Meta Pseudo Labels">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    Overview
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#notations" class="md-nav__link">
+    Notations
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pseudo-labels_1" class="md-nav__link">
+    Pseudo Labels
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#meta-pseudo-labels_2" class="md-nav__link">
+    Meta Pseudo Labels
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#practical-approximation" class="md-nav__link">
+    Practical Approximation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#teachers-auxiliary-loss" class="md-nav__link">
+    Teacher's Auxiliary Loss
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#experiments" class="md-nav__link">
+    Experiments
+  </a>
+  
+    <nav class="md-nav" aria-label="Experiments">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#small-scale-experiments" class="md-nav__link">
+    Small Scale Experiments
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cifar-10-4k-svhn-1k-and-imagenet-10-experiments" class="md-nav__link">
+    CIFAR-10-4K, SVHN-1K, and ImageNet-10% Experiments
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resnet-50-experiments" class="md-nav__link">
+    ResNet-50 Experiments
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#large-scale-experiments" class="md-nav__link">
+    Large Scale Experiments
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pseudo-labels" class="md-nav__link">
+    Pseudo Labels
+  </a>
+  
+    <nav class="md-nav" aria-label="Pseudo Labels">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#drawback" class="md-nav__link">
+    Drawback
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#meta-pseudo-labels_1" class="md-nav__link">
+    Meta Pseudo Labels
+  </a>
+  
+    <nav class="md-nav" aria-label="Meta Pseudo Labels">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    Overview
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#notations" class="md-nav__link">
+    Notations
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pseudo-labels_1" class="md-nav__link">
+    Pseudo Labels
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#meta-pseudo-labels_2" class="md-nav__link">
+    Meta Pseudo Labels
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#practical-approximation" class="md-nav__link">
+    Practical Approximation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#teachers-auxiliary-loss" class="md-nav__link">
+    Teacher's Auxiliary Loss
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#experiments" class="md-nav__link">
+    Experiments
+  </a>
+  
+    <nav class="md-nav" aria-label="Experiments">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#small-scale-experiments" class="md-nav__link">
+    Small Scale Experiments
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cifar-10-4k-svhn-1k-and-imagenet-10-experiments" class="md-nav__link">
+    CIFAR-10-4K, SVHN-1K, and ImageNet-10% Experiments
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resnet-50-experiments" class="md-nav__link">
+    ResNet-50 Experiments
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#large-scale-experiments" class="md-nav__link">
+    Large Scale Experiments
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+  
+                
+
+  
+
+  <nav class="md-tags" >
+    
+      
+        <a href="../../tags/#cvpr" class="md-tag">
+          CVPR
+        </a>
+      
+    
+      
+        <a href="../../tags/#self-training" class="md-tag">
+          Self Training
+        </a>
+      
+    
+  </nav>
+
+
+
+<h1 id="meta-pseudo-labels">Meta Pseudo Labels<a class="headerlink" href="#meta-pseudo-labels" title="Permanent link">&para;</a></h1>
+<p><img alt="width:72px" src="../../assets/images/meta-pseudo-labels/figures/0.png" /></p>
+<ul>
+<li>Paper: <a href="https://arxiv.org/abs/2003.10580">arXiv</a></li>
+<li>Code: <ul>
+<li><a href="https://paperswithcode.com/paper/meta-pseudo-labels">Papers With Code</a> </li>
+<li><a href="https://github.com/google-research/google-research/tree/master/meta_pseudo_labels">Google Research</a> </li>
+<li><a href="https://github.com/kekmodel/MPL-pytorch">MPL-pytorch</a></li>
+</ul>
+</li>
+</ul>
+<p>這篇論文主要貢獻：</p>
+<ol>
+<li>提出一個新的 Pseudo Labeling 方法，可以學習 teacher network 的模型參數。</li>
+<li>透過大量的實驗來驗證此方法的有效性，並且在 ImageNet 上面有 <span class="arithmatex">\(90.2%\)</span> top-1 準確率，達到 SOTA。</li>
+</ol>
+<p>方法的重點：</p>
+<ol>
+<li>借用 [40, 15] 的 meta-learning 方法，透過 one-step gradient 進行更新參數，來近似原本 multi-step 的結果。</li>
+<li>利用 1. 的作法，讓原本 Pseudo Labels 的 teacher-student 的架構中的 teacher network 模型參數可以訓練。</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">References</p>
+<ul>
+<li>[40]: Hanxiao Liu, Karen Simonyan, and Yiming Yang. Darts: Differentiable architecture search. In <em>International Conference on Learning Representations</em>, 2019. 2, 8</li>
+<li>[15]: Chelsea Finn, Pieter Abbeel, and Sergey Levine. Model-agnostic meta-learning for fast adaptation of deep networks. In <em>International Conference on Machine Learning</em>, 2017. 2</li>
+</ul>
+</div>
+<h2 id="pseudo-labels">Pseudo Labels<a class="headerlink" href="#pseudo-labels" title="Permanent link">&para;</a></h2>
+<p>Pseudo Labels 是一種 self-training 方法，其作法如下：</p>
+<ol>
+<li>準備兩個模型，一個是 teacher network，另一個是 student network。</li>
+<li>使用有 labels 的 dataset、或是使用更大的架構，以監督式學習 (supervised learning) 進行訓練 teacher network。</li>
+<li>使用沒有 labels 的 dataset、或是使用更小的架構，以半監督式學習 (semi-supervised learning) 進行訓練 student network。詳細作法如下：<ol>
+<li>將 teacher network 的參數固定，把 unlabeled data 傳入 teacher network 以後將會輸出 teacher network 的預測結果。</li>
+<li>將 teacher network 的預測結果視為 labels (稱為 pseudo labels)，以監督式學習進行訓練 student network。</li>
+</ol>
+</li>
+</ol>
+<p>這樣做的好處是：可以在任意大的 unlabeled dataset 進行訓練。在機器學習任務中，labels 是非常貴的資源，相較之下 unlabeled data 的蒐集更容易些。目前研究有許多 unlabeled dataset 比 labeled dataset 資料量相差超過一個數量級。</p>
+<h3 id="drawback">Drawback<a class="headerlink" href="#drawback" title="Permanent link">&para;</a></h3>
+<p>由 teacher network 產生的 pseudo labels，以直覺來看當然不是 100% 準確的。這會造成：</p>
+<ul>
+<li>如果 pseudo labels 不準確，那 student network 就會用不準確的 labels 進行訓練，想當然的結果就會不好。想想這句話："Garbage in, garbage out." </li>
+<li>Student network 的結果無法明顯的好過 teacher network。</li>
+</ul>
+<p>這件事情在先前的研究中被發現，稱為 confirmation bias (確認偏誤)。</p>
+<div class="admonition confirmation bias">
+<p class="admonition-title">Confirmation</p>
+<p>Network predictions are, of course, sometimes incorrect. This situation is
+reinforced when incorrect predictions are used as labels for unlabeled samples, as
+it is the case in pseudo-labeling.</p>
+<p>Overfitting to incorrect pseudo-labels predicted by the network is known as
+confirmation bias. It is natural to think that reducing the confidence of the
+network on its predictions might alleviate this problem and improve
+generalization.</p>
+<ul>
+<li>[2]: ARAZO, Eric, et al. Pseudo-labeling and confirmation bias in deep semi-supervised learning. In: <em>2020 International Joint Conference on Neural Networks
+(IJCNN)</em>. IEEE, 2020. p. 1-8. </li>
+</ul>
+</div>
+<h2 id="meta-pseudo-labels_1">Meta Pseudo Labels<a class="headerlink" href="#meta-pseudo-labels_1" title="Permanent link">&para;</a></h2>
+<p>這篇方法的主軸在於 <strong>如何使 teacher network 可以訓練</strong> 。</p>
+<h3 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h3>
+<p><img alt="" src="../../assets/images/meta-pseudo-labels/figures/1.png" /></p>
+<h3 id="notations">Notations<a class="headerlink" href="#notations" title="Permanent link">&para;</a></h3>
+<ul>
+<li><span class="arithmatex">\(T, S\)</span>: the teacher network and the student network respectively</li>
+<li><span class="arithmatex">\(\theta_T, \theta_S\)</span>: their corresponding parameters</li>
+<li><span class="arithmatex">\((x_l, y_l)\)</span>: a batch of images and their corresponding labels</li>
+<li><span class="arithmatex">\(x_u\)</span>: a batch of unlabeled images</li>
+<li><span class="arithmatex">\(T(x_u; \theta_T)\)</span>: the <em>soft</em> predictions of the teacher network on the batch <span class="arithmatex">\(x_u\)</span> of unlabeled images</li>
+<li><span class="arithmatex">\(S(x_l; \theta_S), S(x_u; \theta_S)\)</span>: (likewise for student)</li>
+<li><span class="arithmatex">\(\text{CE}(q, p)\)</span>: the cross-entropy loss between two distributions <span class="arithmatex">\(q\)</span> and <span class="arithmatex">\(p\)</span><ul>
+<li>if <span class="arithmatex">\(q\)</span> is a label then it is understood as a one-hot distribution</li>
+<li>if <span class="arithmatex">\(q\)</span> and <span class="arithmatex">\(p\)</span> have multiple instances in them 
+then <span class="arithmatex">\(\text{CE}(q, p)\)</span> is understood as the average of all instances in the batch.</li>
+<li>e.g. <span class="arithmatex">\(\text{CE}(y_l, S(x_l; \theta_S))\)</span> is the canonical cross-entropy loss in supervised learning.</li>
+</ul>
+</li>
+</ul>
+<h3 id="pseudo-labels_1">Pseudo Labels<a class="headerlink" href="#pseudo-labels_1" title="Permanent link">&para;</a></h3>
+<p>Pseudo Labels (PL) 利用 cross-entropy loss 在 unlabeled dataset 上面訓練 student network，可以被描述如下式：</p>
+<div class="arithmatex">\[
+\theta_{S}^{\mathrm{PL}} =
+\underset{\theta_{S}}{\text{argmin }}
+\underbrace{
+    \mathbb{E}_{x_{u}}\left[\operatorname{CE}
+    \left(T\left(x_{u} ; \theta_{T}\right), S\left(x_{u}; \theta_{S}\right)\right)\right]
+}_{
+    :=\mathcal{L}_{u}\left(\theta_{T}, \theta_{S}\right)
+}
+\]</div>
+<p>其中：</p>
+<ul>
+<li>Pseudo target <span class="arithmatex">\(T(x_u; θ_T)\)</span> 是由 pre-trained teacher network 產生，其參數 <span class="arithmatex">\(θ\)</span> 是固定的。</li>
+</ul>
+<p>(數學式解讀：在 unlabeled dataset 中進行訓練時，其 CE 的期望值定義為一個以 teacher 和 student network 的參數作為輸入的函數。)</p>
+<h3 id="meta-pseudo-labels_2">Meta Pseudo Labels<a class="headerlink" href="#meta-pseudo-labels_2" title="Permanent link">&para;</a></h3>
+<p>概念上來說，給定一個好的 teacher network，Pseudo Labels 希望可以在 labeled data 上面將 student network 訓練到很小的 loss，取得其參數 <span class="arithmatex">\(\theta_S^{\text{PL}}\)</span>：</p>
+<div class="arithmatex">\[
+\mathbb{E}_ {x_{l}, y_{l}}\left[\mathrm{CE}\left(y_{l}, S\left(x_{l}; \theta_{S}^{\mathrm{PL}}\right)\right)\right]:=\mathcal{L}_{l}\left(\theta_{S}^{\mathrm{PL}}\right)
+\]</div>
+<p>(數學式解讀：在 labeled dataset 中進行訓練，其 CE 的期望值定義為一個以 student network 的參數作為輸入的函數。)</p>
+<p>其中，student loss 在 labeled data 可以被描述為：<span class="arithmatex">\(\mathcal{L}_ {l}\left(\theta_{S}^{\mathrm{PL}}\left(\theta_{T}\right)\right)\)</span>，這可以被看作是一個輸入為 <span class="arithmatex">\(\theta_T\)</span> 的函數.</p>
+<p>所以，我們可以進一步的根據 <span class="arithmatex">\(\theta_T\)</span> 來最佳化 <span class="arithmatex">\(\mathcal{L}_l\)</span>:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\min_ {\theta_{T}} &amp; \mathcal{L}_ {l}\left(\theta_ {S}^{\mathrm{PL}}\left(\theta_ {T}\right)\right) \newline
+\text { where } &amp; \theta_ {S}^{\mathrm{PL}}\left(\theta_ {T}\right)=\underset{\theta_ {S}}{\operatorname{argmin}} \mathcal{L}_ {u}\left(\theta_ {T}, \theta_ {S}\right) .
+\end{aligned}
+\]</div>
+<p>(數學式解讀：在 labeled dataset 中調整 teacher network 的參數來最小化 loss，其 student network 的參數是在 unlabeled dataset 中進行訓練。)</p>
+<p>直覺上來說，我們可以根據 student network 在 labeled data 的結果來進行最佳化 teacher network 的參數。但是，student network 的參數在 teacher network 的相依性非常複雜，計算梯度 <span class="arithmatex">\(\nabla_{\theta_T} \theta_S^{\text{PL}}(\theta_T)\)</span> 時需要對整個 student network 的訓練過程進行展開。也就是說，如果 student network 訓練過程需要 100 個 epochs，這整個過程的計算圖都要保留下來，才有辦法計算 teacher network 的參數。</p>
+<h3 id="practical-approximation">Practical Approximation<a class="headerlink" href="#practical-approximation" title="Permanent link">&para;</a></h3>
+<p>為了讓上面的計算式可行，本篇論文使用了 [40, 15] 關於 meta-learning 的論文，以 one-step gradient update 來近似本來應該要用 multi-step 更新的參數：</p>
+<div class="arithmatex">\[
+\theta_{S}^{\mathrm{PL}}\left(\theta_{T}\right) \approx \theta_{S}-\eta_{S} \cdot \nabla_{\theta_{S}} \mathcal{L}_{u}\left(\theta_{T}, \theta_{S}\right)
+\]</div>
+<p>其中：</p>
+<ul>
+<li><span class="arithmatex">\(\eta\)</span>: the learning rate</li>
+</ul>
+<p>在 Meta Pseudo Labels 中，teacher network 的目標函數如下：</p>
+<div class="arithmatex">\[
+\min_ {\theta_ {T}} \mathcal{L}_ {l}\left(\theta_ {S}^{\mathrm{PL}}\left(\theta_ {T}\right)\right) \newline \approx \mathcal{L}_ {l}\left(\theta_ {S}-\eta_ {S} \cdot \nabla_ {\theta_ {S}} \mathcal{L}_ {u}\left(\theta_ {T}, \theta_ {S}\right)\right)
+\]</div>
+<p>比較原式：</p>
+<div class="arithmatex">\[
+\min_ {\theta_{T}} \mathcal{L}_ {l}\left(\theta_ {S}^{\mathrm{PL}}\left(\theta_ {T}\right)\right) =
+\mathcal{L}_ {l}\left( \underset{\theta_ {S}}{\operatorname{argmin}} \mathcal{L}_ {u}\left(\theta_ {T}, \theta_ {S}\right) \right)
+\]</div>
+<p>Student network 參數更新後可以在 teacher network 中被重複利用：</p>
+<ul>
+<li>
+<p>Student: 取出一個 batch 的 unlabeled data，然後傳入 student 和 teacher network 取得預測結果。將 teacher network 的預測結果作為 pseudo labels 來計算 loss，並更新 student network 的參數：</p>
+<div class="arithmatex">\[
+θ'_ S = θ_ S − \eta_ S ∇_ {θ_ S} \mathcal{L}_ u(θ_ T , θ_ S)
+\]</div>
+</li>
+<li>
+<p>Teacher: 取出一個 batch 的 labeled data，然後傳入 student 和 teacher network 取得預測結果。將 student network 的預測結果與 labels (ground-truth) 來計算 loss 並更新 teacher network 的參數：</p>
+<div class="arithmatex">\[
+\theta_{T}^{\prime} = \theta_{T}-\eta_{T}\nabla_{\theta_{T}} \mathcal{L}_{l}(\underbrace{\theta_{S}-\nabla_{\theta_{S}} \mathcal{L}_{u}\left(\theta_{T}, \theta_{S}\right)} _{= \theta_{S}^{\prime}}) = \theta_{T}-\eta_{T}\nabla_{\theta_{T}} \mathcal{L}_{l}(\theta_{S}^{\prime}).
+\]</div>
+</li>
+</ul>
+<p>接下來還有兩個選擇：teacher network 要輸出 soft pseudo labels 還是 hard pseudo labels：</p>
+<ul>
+<li>Soft pseudo labels: 可行，目標函數是可微分的。</li>
+<li>Hard pseudo labels: 計算圖較小，這在大型 dataset 的實驗中是必要的。</li>
+</ul>
+<p>此外，作者也發現選用 soft 或是 hard 沒有顯著差異。不過在使用 hard pseudo labels 時，需要使用小改過的 REINFORCE 來求得上面的近似梯度 (在附錄 A 中詳細推導)。</p>
+<h3 id="teachers-auxiliary-loss">Teacher's Auxiliary Loss<a class="headerlink" href="#teachers-auxiliary-loss" title="Permanent link">&para;</a></h3>
+<p>另外，如果使用輔助 loss 訓練的結果會更好。所以，作者用監督式和半監督式的目標函數進行 teacher network 的訓練：</p>
+<ol>
+<li>監督式訓練：在 labeled dataset 上面訓練 teacher network。</li>
+<li>半監督式訓練：在 unlabeled dataset 上面利用 UDA [76] 訓練 teacher network。</li>
+<li>之後，student network 只在 unlabeled dataset 上面訓練，使用 teacher network 產生的 pseudo labels。</li>
+<li>最後，student network 在 labeled dataset 上面 fine-tune。</li>
+</ol>
+<div class="admonition reference">
+<p class="admonition-title">Reference</p>
+<ul>
+<li>[76] Hugo Touvron, Andrea Vedaldi, Matthijs Douze, and Hervé Jégou. Fixing the train-test resolution discrepancy: Fixefficientnet. arXiv preprint arXiv:2003.08237, 2020. 7</li>
+</ul>
+</div>
+<h2 id="experiments">Experiments<a class="headerlink" href="#experiments" title="Permanent link">&para;</a></h2>
+<p>總共做了四組實驗：</p>
+<ul>
+<li>Small Scale Experiments</li>
+<li>CIFAR-10-4K, SVHN-1K, and ImageNet-10% Experiments</li>
+<li>ResNet-50 Experiment</li>
+<li>Large Scale Experiment</li>
+</ul>
+<h3 id="small-scale-experiments">Small Scale Experiments<a class="headerlink" href="#small-scale-experiments" title="Permanent link">&para;</a></h3>
+<p><img alt="" src="../../assets/images/meta-pseudo-labels/figures/2.png" /></p>
+<h3 id="cifar-10-4k-svhn-1k-and-imagenet-10-experiments">CIFAR-10-4K, SVHN-1K, and ImageNet-10% Experiments<a class="headerlink" href="#cifar-10-4k-svhn-1k-and-imagenet-10-experiments" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th align="center">Dataset</th>
+<th align="center">Image Resolution</th>
+<th align="right">#-Labeled Examples</th>
+<th align="right">#-Unlabeled Examples</th>
+<th align="right">#-Test Set</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><strong>CIFAR-10-4K</strong></td>
+<td align="center">32x32</td>
+<td align="right">4,000</td>
+<td align="right">41,000</td>
+<td align="right">10,000</td>
+</tr>
+<tr>
+<td align="center"><strong>SVHN-1K</strong></td>
+<td align="center">32x32</td>
+<td align="right">1,000</td>
+<td align="right">603,000</td>
+<td align="right">26,032</td>
+</tr>
+<tr>
+<td align="center"><strong>ImageNet-10%</strong></td>
+<td align="center">224x224</td>
+<td align="right">128,000</td>
+<td align="right">1,280,000</td>
+<td align="right">50,000</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="" src="../../assets/images/meta-pseudo-labels/tables/2.png" /></p>
+<h3 id="resnet-50-experiments">ResNet-50 Experiments<a class="headerlink" href="#resnet-50-experiments" title="Permanent link">&para;</a></h3>
+<p><img alt="" src="../../assets/images/meta-pseudo-labels/tables/3.png" /></p>
+<h3 id="large-scale-experiments">Large Scale Experiments<a class="headerlink" href="#large-scale-experiments" title="Permanent link">&para;</a></h3>
+<p><img alt="" src="../../assets/images/meta-pseudo-labels/tables/1.png" />
+<img alt="" src="../../assets/images/meta-pseudo-labels/tables/4.png" /></p>
+
+              
+
+  <!-- Giscus -->
+  <h2 id="__comments">Comments</h2>
+
+  <script src="https://giscus.app/client.js"
+      data-repo="aquastripe/paper-notes"
+      data-repo-id="MDEwOlJlcG9zaXRvcnkzMjg4MzkzMjI="
+      data-category="Announcements"
+      data-category-id="DIC_kwDOE5mwms4CO96G"
+      data-mapping="title"
+      data-reactions-enabled="1"
+      data-emit-metadata="0"
+      data-input-position="bottom"
+      data-theme="light"
+      data-lang="zh-TW"
+      crossorigin="anonymous"
+      async>
+  </script>
+
+  <!-- Reload on palette change -->
+  <script>
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object")
+      if (palette.color.scheme === "slate") {
+        var giscus = document.querySelector("script[src*=giscus]")
+        giscus.setAttribute("data-theme", "dark") 
+      }
+
+    /* Register event handlers after documented loaded */
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate" ? "dark" : "light"
+
+          /* Instruct Giscus to change theme */
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../exploring-simple-siamese-representation-learning/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Exploring Simple Siamese Representation Learning (SimSiam)" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Exploring Simple Siamese Representation Learning (SimSiam)
+            </div>
+          </div>
+        </a>
+      
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy 2022 Hao-Ting Li. Content on this site is licensed under a <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a6c66575.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1354 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.15">
+    
+    
+      
+        <title>Exploring Simple Siamese Representation Learning (SimSiam) - 電腦視覺與深度學習的論文筆記</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.c382b1dc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.cc9b2e1e.min.css">
+        
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#exploring-simple-siamese-representation-learning-simsiam" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="電腦視覺與深度學習的論文筆記" class="md-header__button md-logo" aria-label="電腦視覺與深度學習的論文筆記" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            電腦視覺與深度學習的論文筆記
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Exploring Simple Siamese Representation Learning (SimSiam)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="電腦視覺與深度學習的論文筆記" class="md-nav__button md-logo" aria-label="電腦視覺與深度學習的論文筆記" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    電腦視覺與深度學習的論文筆記
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        關於本站
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tags/" class="md-nav__link">
+        Tags
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          2020
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="2020" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          2020
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2020/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/" class="md-nav__link">
+        An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          2021
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="2021" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          2021
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Exploring Simple Siamese Representation Learning (SimSiam)
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Exploring Simple Siamese Representation Learning (SimSiam)
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    Background
+  </a>
+  
+    <nav class="md-nav" aria-label="Background">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#siamese-networks" class="md-nav__link">
+    Siamese networks
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#problem" class="md-nav__link">
+    Problem
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#method" class="md-nav__link">
+    Method
+  </a>
+  
+    <nav class="md-nav" aria-label="Method">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#baseline-settings" class="md-nav__link">
+    Baseline settings
+  </a>
+  
+    <nav class="md-nav" aria-label="Baseline settings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimizer" class="md-nav__link">
+    Optimizer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#projection-mlp-encoder-f" class="md-nav__link">
+    Projection MLP (encoder \(f\))
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prediction-mlp-predictor-h" class="md-nav__link">
+    Prediction MLP (predictor \(h\))
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#empirical-study" class="md-nav__link">
+    Empirical Study
+  </a>
+  
+    <nav class="md-nav" aria-label="Empirical Study">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stop-gradient" class="md-nav__link">
+    Stop-gradient
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#predictor" class="md-nav__link">
+    Predictor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#batch-size" class="md-nav__link">
+    Batch Size
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#batch-normalization" class="md-nav__link">
+    Batch Normalization
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#similarity-function" class="md-nav__link">
+    Similarity Function
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#symmetrization" class="md-nav__link">
+    Symmetrization
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypothesis" class="md-nav__link">
+    Hypothesis
+  </a>
+  
+    <nav class="md-nav" aria-label="Hypothesis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#formulation" class="md-nav__link">
+    Formulation
+  </a>
+  
+    <nav class="md-nav" aria-label="Formulation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#solving-theta" class="md-nav__link">
+    Solving \(\theta\)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solving-eta" class="md-nav__link">
+    Solving \(\eta\)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#one-step-alternation" class="md-nav__link">
+    One-step alternation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#predictor_1" class="md-nav__link">
+    Predictor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#symmetrization_1" class="md-nav__link">
+    Symmetrization
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proof-of-concept" class="md-nav__link">
+    Proof of concept
+  </a>
+  
+    <nav class="md-nav" aria-label="Proof of concept">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multi-step-alternation" class="md-nav__link">
+    Multi-step alternation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expectation-over-augmentations" class="md-nav__link">
+    Expectation over augmentations
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#discussion" class="md-nav__link">
+    Discussion
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparisons" class="md-nav__link">
+    Comparisons
+  </a>
+  
+    <nav class="md-nav" aria-label="Comparisons">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#result-comparisons" class="md-nav__link">
+    Result Comparisons
+  </a>
+  
+    <nav class="md-nav" aria-label="Result Comparisons">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#imagenet" class="md-nav__link">
+    ImageNet
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transfer-learning" class="md-nav__link">
+    Transfer Learning
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methodology-comparisons" class="md-nav__link">
+    Methodology Comparisons
+  </a>
+  
+    <nav class="md-nav" aria-label="Methodology Comparisons">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#relation-to-simclr" class="md-nav__link">
+    Relation to SimCLR
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relation-to-swav" class="md-nav__link">
+    Relation to SwAV
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relation-to-byol" class="md-nav__link">
+    Relation to BYOL
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    Summary
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../meta-pseudo-labels/" class="md-nav__link">
+        Meta Pseudo Labels
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    Background
+  </a>
+  
+    <nav class="md-nav" aria-label="Background">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#siamese-networks" class="md-nav__link">
+    Siamese networks
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#problem" class="md-nav__link">
+    Problem
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#method" class="md-nav__link">
+    Method
+  </a>
+  
+    <nav class="md-nav" aria-label="Method">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#baseline-settings" class="md-nav__link">
+    Baseline settings
+  </a>
+  
+    <nav class="md-nav" aria-label="Baseline settings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimizer" class="md-nav__link">
+    Optimizer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#projection-mlp-encoder-f" class="md-nav__link">
+    Projection MLP (encoder \(f\))
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prediction-mlp-predictor-h" class="md-nav__link">
+    Prediction MLP (predictor \(h\))
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#empirical-study" class="md-nav__link">
+    Empirical Study
+  </a>
+  
+    <nav class="md-nav" aria-label="Empirical Study">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stop-gradient" class="md-nav__link">
+    Stop-gradient
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#predictor" class="md-nav__link">
+    Predictor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#batch-size" class="md-nav__link">
+    Batch Size
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#batch-normalization" class="md-nav__link">
+    Batch Normalization
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#similarity-function" class="md-nav__link">
+    Similarity Function
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#symmetrization" class="md-nav__link">
+    Symmetrization
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hypothesis" class="md-nav__link">
+    Hypothesis
+  </a>
+  
+    <nav class="md-nav" aria-label="Hypothesis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#formulation" class="md-nav__link">
+    Formulation
+  </a>
+  
+    <nav class="md-nav" aria-label="Formulation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#solving-theta" class="md-nav__link">
+    Solving \(\theta\)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solving-eta" class="md-nav__link">
+    Solving \(\eta\)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#one-step-alternation" class="md-nav__link">
+    One-step alternation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#predictor_1" class="md-nav__link">
+    Predictor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#symmetrization_1" class="md-nav__link">
+    Symmetrization
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proof-of-concept" class="md-nav__link">
+    Proof of concept
+  </a>
+  
+    <nav class="md-nav" aria-label="Proof of concept">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multi-step-alternation" class="md-nav__link">
+    Multi-step alternation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expectation-over-augmentations" class="md-nav__link">
+    Expectation over augmentations
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#discussion" class="md-nav__link">
+    Discussion
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparisons" class="md-nav__link">
+    Comparisons
+  </a>
+  
+    <nav class="md-nav" aria-label="Comparisons">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#result-comparisons" class="md-nav__link">
+    Result Comparisons
+  </a>
+  
+    <nav class="md-nav" aria-label="Result Comparisons">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#imagenet" class="md-nav__link">
+    ImageNet
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transfer-learning" class="md-nav__link">
+    Transfer Learning
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methodology-comparisons" class="md-nav__link">
+    Methodology Comparisons
+  </a>
+  
+    <nav class="md-nav" aria-label="Methodology Comparisons">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#relation-to-simclr" class="md-nav__link">
+    Relation to SimCLR
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relation-to-swav" class="md-nav__link">
+    Relation to SwAV
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relation-to-byol" class="md-nav__link">
+    Relation to BYOL
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    Summary
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+  
+                
+
+  
+
+  <nav class="md-tags" >
+    
+      
+        <a href="../../tags/#cvpr" class="md-tag">
+          CVPR
+        </a>
+      
+    
+      
+        <a href="../../tags/#representation-learning" class="md-tag">
+          Representation Learning
+        </a>
+      
+    
+  </nav>
+
+
+
+<h1 id="exploring-simple-siamese-representation-learning-simsiam">Exploring Simple Siamese Representation Learning (SimSiam)<a class="headerlink" href="#exploring-simple-siamese-representation-learning-simsiam" title="Permanent link">&para;</a></h1>
+<p><img alt="" src="../../assets/images/exploring-simple-siamese-representation-learning/figures/authors.png" /></p>
+<ul>
+<li>Paper: https://arxiv.org/abs/2011.10566</li>
+<li>Code: https://github.com/facebookresearch/simsiam</li>
+</ul>
+<h2 id="background">Background<a class="headerlink" href="#background" title="Permanent link">&para;</a></h2>
+<h3 id="siamese-networks">Siamese networks<a class="headerlink" href="#siamese-networks" title="Permanent link">&para;</a></h3>
+<p>Applications:</p>
+<ul>
+<li>signature [4]</li>
+<li>face verification [34]</li>
+<li>tracking [3]</li>
+<li>one-shot learning [23]</li>
+</ul>
+<h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">&para;</a></h2>
+<p>Siamese networks 會產生 trivial solutions：所有的輸出結果都是常數，且準確率非常低，如下圖。</p>
+<p><img alt="" src="../../assets/images/exploring-simple-siamese-representation-learning/figures/2.png" /></p>
+<p>有幾種策略來避免這個問題：</p>
+<ul>
+<li><strong>Contrastive learning</strong>: 例如 <strong>SimCLR</strong> [8] 使用正負樣本進行 contrastive learning，負樣本可以用來避免產生常數的解。</li>
+<li><strong>Clustering</strong>: 例如 <strong>SwAV</strong> [7] 套用 online clustering 到 Siamese networks 。</li>
+<li><strong>BYOL</strong> [15] 使用 momentum encoder.</li>
+</ul>
+<h2 id="method">Method<a class="headerlink" href="#method" title="Permanent link">&para;</a></h2>
+<p><img alt="" src="../../assets/images/exploring-simple-siamese-representation-learning/figures/1.png" /></p>
+<ol>
+<li>stop-grad</li>
+<li>predictor</li>
+</ol>
+<p>輸入影像經由資料擴增成為兩個 views <span class="arithmatex">\(x_1, x_2\)</span> 後，個別傳入一個共享參數的 encoder <span class="arithmatex">\(f\)</span>，到目前為止和一般的 Siamese Networks 並無不同。接著，其中一個 view 傳入一個 MLP head [15] 組成的 predictor <span class="arithmatex">\(h\)</span>，輸出結果為 <span class="arithmatex">\(p_1 \triangleq h(f(x_1))\)</span>，並且和另一個 view <span class="arithmatex">\(z_2 \triangleq f(x_2)\)</span> 計算 negative cosine similarity:</p>
+<div class="arithmatex">\[
+\mathcal{D}\left(p_{1}, z_{2}\right)=-\frac{p_{1}}{\left\|p_{1}\right\|_{2}} \cdot \frac{z_{2}}{\left\|z_{2}\right\|_{2}}
+\]</div>
+<p>接著，根據 [15] 這裡定義一個對稱化的 loss:</p>
+<div class="arithmatex">\[
+\mathcal{L}=\frac{1}{2} \mathcal{D}\left(p_{1}, z_{2}\right)+\frac{1}{2} \mathcal{D}\left(p_{2}, z_{1}\right)
+\]</div>
+<p>對每一張影像都計算這個 loss，其 total loss 為所有影像的 loss 再取平均，最小值為 <span class="arithmatex">\(-1\)</span>。最後，套用這篇方法的重點：在訓練過程，<strong>在 <span class="arithmatex">\(z\)</span> 的部份停止傳遞梯度 (stop-gradient, <code>stopgrad</code>)</strong>。上式修改如下：</p>
+<div class="arithmatex">\[
+\mathcal{L}=\frac{1}{2} \mathcal{D}\left(p_{1}, \text { stopgrad }\left(z_{2}\right)\right)+\frac{1}{2} \mathcal{D}\left(p_{2}, \text { stopgrad }\left(z_{1}\right)\right)
+\]</div>
+<p>演算法如下：</p>
+<p><img alt="" src="../../assets/images/exploring-simple-siamese-representation-learning/figures/alg-1.png" /></p>
+<h3 id="baseline-settings">Baseline settings<a class="headerlink" href="#baseline-settings" title="Permanent link">&para;</a></h3>
+<h4 id="optimizer">Optimizer<a class="headerlink" href="#optimizer" title="Permanent link">&para;</a></h4>
+<ul>
+<li>標準 SGD</li>
+<li>batch size: <span class="arithmatex">\(512\)</span></li>
+<li>learning rate: 使用 linear scaling [15] 的機制 (<span class="arithmatex">\(lr \times \text{BatchSize} / 256\)</span>)，初始值設定為 <span class="arithmatex">\(0.05\)</span></li>
+<li>使用 cosine decay schedule</li>
+<li>weight decay: <span class="arithmatex">\(0.0001\)</span></li>
+<li>momentum: <span class="arithmatex">\(0.9\)</span></li>
+</ul>
+<h4 id="projection-mlp-encoder-f">Projection MLP (encoder <span class="arithmatex">\(f\)</span>)<a class="headerlink" href="#projection-mlp-encoder-f" title="Permanent link">&para;</a></h4>
+<p>3 層 MLP:</p>
+<ul>
+<li>(BN+fc+ReLU)*2+(BN+fc)</li>
+<li>hidden layer: <span class="arithmatex">\(2048\)</span>-d</li>
+</ul>
+<h4 id="prediction-mlp-predictor-h">Prediction MLP (predictor <span class="arithmatex">\(h\)</span>)<a class="headerlink" href="#prediction-mlp-predictor-h" title="Permanent link">&para;</a></h4>
+<p>2 層 MLP:</p>
+<ul>
+<li>(BN+fc+ReLU)*2+(BN+fc)</li>
+</ul>
+<h2 id="empirical-study">Empirical Study<a class="headerlink" href="#empirical-study" title="Permanent link">&para;</a></h2>
+<p>以下是實驗結果：</p>
+<h3 id="stop-gradient">Stop-gradient<a class="headerlink" href="#stop-gradient" title="Permanent link">&para;</a></h3>
+<p><img alt="" src="../../assets/images/exploring-simple-siamese-representation-learning/figures/2.png" /></p>
+<p>Figure 2. 的實驗展示了 collapse 存在的問題。</p>
+<ol>
+<li>一般的 Siamese Network 的 training loss 在很早期的時候就會下降到最低值（在這實驗中是 <span class="arithmatex">\(-1\)</span>）；而加入 stop-grad 機制後則會有正常的 loss 曲線。</li>
+<li>觀測輸出結果經由 <span class="arithmatex">\(l_2\)</span> 標準化 (<span class="arithmatex">\(z/\|z\|_2\)</span>) 後的標準差。因為一般的 Siamese Network 輸出為定值，所以標準差為 <span class="arithmatex">\(0\)</span>；而加入 stop-grad 機制後，其標準差落在合理的 <span class="arithmatex">\(\frac{1}{\sqrt{d}}\)</span>。
+   註：如果 <span class="arithmatex">\(z\)</span> 為一個 zero-mean isotropic Gaussian distribution，其 <span class="arithmatex">\(z/\|z\|_2\)</span> 的標準差近似於 <span class="arithmatex">\(\frac{1}{\sqrt{d}}\)</span>。</li>
+<li>如同 1. 的結果，Siamese Network 的準確率趨近於 <span class="arithmatex">\(0\%\)</span>；而加入 stop-grad 機制後，會正常的在訓練過程中往上提升。</li>
+<li>最後經過五次實驗之後的平均準確率。</li>
+</ol>
+<h3 id="predictor">Predictor<a class="headerlink" href="#predictor" title="Permanent link">&para;</a></h3>
+<p>如果不加 predictor MLP 會如何？從 symmetric loss 來看：</p>
+<div class="arithmatex">\[
+\mathcal{L}=\frac{1}{2} \mathcal{D}\left(p_{1}, \text { stopgrad }\left(z_{2}\right)\right)+\frac{1}{2} \mathcal{D}\left(p_{2}, \text { stopgrad }\left(z_{1}\right)\right)
+\]</div>
+<p>不使用 predictor 的話，上式會變成：</p>
+<div class="arithmatex">\[
+\mathcal{L}=\frac{1}{2} \mathcal{D}\left(z_{1}, \text { stopgrad }\left(z_{2}\right)\right)+\frac{1}{2} \mathcal{D}\left(z_{2}, \text { stopgrad }\left(z_{1}\right)\right)
+\]</div>
+<p>它的 gradient 會和 <span class="arithmatex">\(\mathcal{D}(z_1,z_2)\)</span> 相同，大小為一半。這種情況下，幾乎等同於沒有加入 stop-grad 機制，所以會發生 collapse。</p>
+<p><img alt="" src="../../assets/images/exploring-simple-siamese-representation-learning/tables/1.png" /></p>
+<p>Table 1. 的實驗展示了 predictor MLP 的影響：</p>
+<ol>
+<li>(a) 當沒有 predictor MLP <span class="arithmatex">\(h\)</span> 時，collapse 會發生。</li>
+<li>(b) 如果 <span class="arithmatex">\(h\)</span> 的參數經過隨機初始化後設定為定值，這樣也不行。但原因並非發生 collapse，而是訓練不收斂，loss 維持在高的值。因此，<span class="arithmatex">\(h\)</span> 的參數需要進行訓練。</li>
+<li>&copy; 另外作者也發現如果用固定的 learning rate，訓練結果會更好。可能的解釋為 <span class="arithmatex">\(h\)</span> 需要適應最新的 representations，所以減少 learning rate 並非必要。在很多的模型變體中，也發現固定的 learning rate 結果會稍微的更好。</li>
+</ol>
+<h3 id="batch-size">Batch Size<a class="headerlink" href="#batch-size" title="Permanent link">&para;</a></h3>
+<p><img alt="" src="../../assets/images/exploring-simple-siamese-representation-learning/tables/2.png" /></p>
+<p>實驗設定：固定 SGD 演算法，learning rate 使用 linear scaling rule (<span class="arithmatex">\(lr \times \text{BatchSize}/256\)</span>)。在 batch size <span class="arithmatex">\(\ge 1024\)</span> 使用 <span class="arithmatex">\(10\)</span> epochs of warm-up [14]。</p>
+<p>從 Table 2. 結果發現：SimSiam 的 batch size 設定值是很寬容的，不管設定多少都可以有相似的結果。對比之下，SimCLR 和 SwAV 必須要有非常大的 batch size (e.g., <span class="arithmatex">\(4096\)</span>) 才可以用。</p>
+<p>作者注意到標準的 SGD 在 batch size 太大時無法運作，即使是監督式訓練也不行；而這個實驗結果說明了不需要特化的 optimizer。</p>
+<h3 id="batch-normalization">Batch Normalization<a class="headerlink" href="#batch-normalization" title="Permanent link">&para;</a></h3>
+<p><img alt="" src="../../assets/images/exploring-simple-siamese-representation-learning/tables/3.png" /></p>
+<p>從 Table 3. 結果發現：</p>
+<ol>
+<li>(a) 將所有的 BN 移除之後，準確率下降到 <span class="arithmatex">\(34.6 \%\)</span>，但沒有發生 collapse。推測原因是最佳化的難度太高。</li>
+<li>(b) 在 hidden layers 加入 BN 以後就提升到 <span class="arithmatex">\(67.4 \%\)</span>。</li>
+</ol>
+<h3 id="similarity-function">Similarity Function<a class="headerlink" href="#similarity-function" title="Permanent link">&para;</a></h3>
+<p>把相似度函數修改如下：</p>
+<div class="arithmatex">\[
+\mathcal{D}\left(p_{1}, z_{2}\right)=-\operatorname{softmax}\left(z_{2}\right) \cdot \log \operatorname{softmax}\left(p_{1}\right)
+\]</div>
+<p>結果為：</p>
+<p><img alt="" src="../../assets/images/exploring-simple-siamese-representation-learning/figures/similarity-function.png" /></p>
+<p>結果較差一些，但沒有發生 collapse，證明和相似度函數無關。</p>
+<h3 id="symmetrization">Symmetrization<a class="headerlink" href="#symmetrization" title="Permanent link">&para;</a></h3>
+<p>Symmetrized loss:</p>
+<div class="arithmatex">\[
+\mathcal{L}=\frac{1}{2} \mathcal{D}\left(p_{1}, \text {stopgrad}\left(z_{2}\right)\right)+\frac{1}{2} \mathcal{D}\left(p_{2}, \text {stopgrad}\left(z_{1}\right)\right)
+\]</div>
+<p>Asymmetrized loss:</p>
+<div class="arithmatex">\[
+\mathcal{D}\left(p_{1}, \text { stopgrad }\left(z_{2}\right)\right)
+\]</div>
+<p><span class="arithmatex">\(2 \times\)</span> asym. 代表對每個影像都採樣兩次。結果如下：</p>
+<p><img alt="" src="../../assets/images/exploring-simple-siamese-representation-learning/figures/symmetrization.png" /></p>
+<p>代表 Symmetrization 對結果影響不多，類似於更密集的採樣。</p>
+<h2 id="hypothesis">Hypothesis<a class="headerlink" href="#hypothesis" title="Permanent link">&para;</a></h2>
+<p>以 proof-of-concept 實驗來分析 SimSiam 究竟做了什麼導致它能成功。</p>
+<h3 id="formulation">Formulation<a class="headerlink" href="#formulation" title="Permanent link">&para;</a></h3>
+<p>Hypothesis: 假設 SimSiam 以 Expectation-Maximization (EM) like 演算法實作，涉及兩組變數和兩組子問題 (sub-problems)。</p>
+<p>考慮一個 loss function 如下形式：</p>
+<div class="arithmatex">\[
+\mathcal{L}(\theta, \eta)=\mathbb{E}_{x, \mathcal{T}}\left[\left\|\mathcal{F}_{\theta}(\mathcal{T}(x))-\eta_{x}\right\|_{2}^{2}\right]
+\]</div>
+<ul>
+<li><span class="arithmatex">\(\mathcal{F}\)</span>: 神經網路模型，<span class="arithmatex">\(\theta\)</span> 是它的參數。</li>
+<li><span class="arithmatex">\(\mathcal{T}\)</span>: 資料擴增的變換函數</li>
+<li><span class="arithmatex">\(x\)</span>: 輸入影像</li>
+<li><span class="arithmatex">\(\eta_x\)</span>: 輸入影像的特徵，其大小正比於輸入影像的數量。</li>
+</ul>
+<p>這個 loss 是一個影像與擴增的分佈期望值。為了簡化分析，以 mean square error (MSE) 代替 cosine similarity，因為向量經過 <span class="arithmatex">\(l_2\)</span>-normalized 計算會等同於 MSE。</p>
+<p>考慮到求解這個 loss function:</p>
+<div class="arithmatex">\[
+\min _{\theta, \eta} \mathcal{L}(\theta, \eta)
+\]</div>
+<p>這個式子類似於 k-means clustering：<span class="arithmatex">\(\theta\)</span> 類似於群中心，<span class="arithmatex">\(\eta_x\)</span> 類似於 <span class="arithmatex">\(x\)</span> 的 assignment vector (一種 one-hot vector)。也類似於 k-means，這個式子以一種交替的迭代演算法進行最佳化：固定某一組變數，求解另一組。如下：</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\theta^{t} &amp; \leftarrow \arg \min _{\theta} \mathcal{L}\left(\theta, \eta^{t-1}\right) \newline
+\eta^{t} &amp; \leftarrow \arg \min _{\eta} \mathcal{L}\left(\theta^{t}, \eta\right)
+\end{aligned}
+\]</div>
+<h4 id="solving-theta">Solving <span class="arithmatex">\(\theta\)</span><a class="headerlink" href="#solving-theta" title="Permanent link">&para;</a></h4>
+<p>可以使用 SGD 進行求解，而這正好是 stop-grad 機制：gradient 不會在 <span class="arithmatex">\(\eta^{t-1}\)</span> 進行 back propagate。</p>
+<h4 id="solving-eta">Solving <span class="arithmatex">\(\eta\)</span><a class="headerlink" href="#solving-eta" title="Permanent link">&para;</a></h4>
+<p>可以直接透過下式計算來求解：</p>
+<div class="arithmatex">\[
+\eta_{x}^{t} \leftarrow \mathbb{E}_{\mathcal{T}}\left[\mathcal{F}_{\theta^{t}}(\mathcal{T}(x))\right]
+\]</div>
+<h4 id="one-step-alternation">One-step alternation<a class="headerlink" href="#one-step-alternation" title="Permanent link">&para;</a></h4>
+<p>本來要計算期望值需要採樣所有 augmentation，可以只採樣一次來近似，標記為 <span class="arithmatex">\(\mathcal{T}^\prime\)</span>:</p>
+<div class="arithmatex">\[
+\eta_{x}^{t} \leftarrow \mathcal{F}_{\theta^{t}}\left(\mathcal{T}^{\prime}(x)\right)
+\]</div>
+<p>帶回去原式，將被改為如下：</p>
+<div class="arithmatex">\[
+\theta^{t+1} \leftarrow \arg \min _{\theta} \mathbb{E}_{x, \mathcal{T}}\left[\left\|\mathcal{F}_{\theta}(\mathcal{T}(x))-\mathcal{F}_{\theta^{t}}\left(\mathcal{T}^{\prime}(x)\right)\right\|_{2}^{2}\right]
+\]</div>
+<p>其中，<span class="arithmatex">\(\theta^t\)</span> 是常數。因此，上面的式子代表：Siamese network + stop-grad。</p>
+<h4 id="predictor_1">Predictor<a class="headerlink" href="#predictor_1" title="Permanent link">&para;</a></h4>
+<p>現在開始探討 predictor <span class="arithmatex">\(h\)</span> 在這個架構中的作用。</p>
+<p>根據定義，predictor <span class="arithmatex">\(h\)</span> 預期用來最小化下式：</p>
+<div class="arithmatex">\[
+\mathbb{E}_{z}\left[ \left \| h \lbrace z_{1} \rbrace - z_{2} \right \|_{2}^{2}\right]
+\]</div>
+<p>最佳解為</p>
+<div class="arithmatex">\[
+h\left(z_{1}\right)=\mathbb{E}_{z}\left[z_{2}\right]=\mathbb{E}_{\mathcal{T}}[f(\mathcal{T}(x))] \quad \text{for any image } x
+\]</div>
+<p>在前面的式子中，利用 one-step alternation 近似期望值得解。在實務上，不可能透過採樣所有資料點來算出期望值，因此在這邊透過一個神經網路 predictor <span class="arithmatex">\(h\)</span> 來預測它的期望值。</p>
+<h4 id="symmetrization_1">Symmetrization<a class="headerlink" href="#symmetrization_1" title="Permanent link">&para;</a></h4>
+<p>到目前為止，都還沒有涉及到 symmetrization。symmetrization 在此處的作用像是更密集的採樣 <span class="arithmatex">\(\mathcal{T}\)</span>。實際上這並非是必要的，不過它可以提昇準確率。</p>
+<h3 id="proof-of-concept">Proof of concept<a class="headerlink" href="#proof-of-concept" title="Permanent link">&para;</a></h3>
+<h4 id="multi-step-alternation">Multi-step alternation<a class="headerlink" href="#multi-step-alternation" title="Permanent link">&para;</a></h4>
+<p>以下的實驗使用與 SimSiam 相同的架構和 hyperparameter，計算下面的最佳化：</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\theta^{t} &amp; \leftarrow \arg \min _{\theta} \mathcal{L}\left(\theta, \eta^{t-1}\right) \newline
+\eta^{t} &amp; \leftarrow \arg \min _{\eta} \mathcal{L}\left(\theta^{t}, \eta\right)
+\end{aligned}
+\]</div>
+<p>兩個最佳化式子代表會分為兩個 loop 進行更新參數: inner loop (<span class="arithmatex">\(\theta\)</span>) 與 outer loop (<span class="arithmatex">\(\eta\)</span>)。其中，要用 <span class="arithmatex">\(k\)</span> 個 SGD steps 來更新 <span class="arithmatex">\(\theta\)</span>，結果如下：</p>
+<p><img alt="" src="../../assets/images/exploring-simple-siamese-representation-learning/figures/multi-step-alternation.png" /></p>
+<p>從上式可以看出，one-step alteration 的想法是可行的，更多的 steps 雖然結果更好，但是計算量更大。</p>
+<h4 id="expectation-over-augmentations">Expectation over augmentations<a class="headerlink" href="#expectation-over-augmentations" title="Permanent link">&para;</a></h4>
+<p>以下的實驗為了驗證 predictor <span class="arithmatex">\(h\)</span> 是否可以近似期望值的計算結果。在這裡，使用 moving-average (類似於 [36] 的 memory bank) 來更新 <span class="arithmatex">\(\eta\)</span>:</p>
+<div class="arithmatex">\[
+\eta_{x}^{t} \leftarrow m * \eta_{x}^{t-1}+(1-m) * \mathcal{F}_{\theta^{t}}\left(\mathcal{T}^{\prime}(x)\right)
+\]</div>
+<p>最後的結果達到 <span class="arithmatex">\(55.0 \%\)</span> 的準確率。如果完全移除 <span class="arithmatex">\(h\)</span> 的話，結果如 Table 1a。因此，這個實驗代表 predictor <span class="arithmatex">\(h\)</span> 可以用來近似 <span class="arithmatex">\(\mathbb{E}_{\mathcal{T}}[\cdot]\)</span>。</p>
+<h3 id="discussion">Discussion<a class="headerlink" href="#discussion" title="Permanent link">&para;</a></h3>
+<p>以上的 hypothesis 試圖解釋 SimSiam 可能是什麼，還沒有以形式化的方式來確定為何可以解決 collapse 的問題。因此，到這篇還是以經驗來推斷它可以解決 collapse。</p>
+<p>作者提供一個觀點來解釋為何解決了 collapse 問題：alternating optimization 提供了另一種 trajectory，<span class="arithmatex">\(\eta_x\)</span> 在這個最佳化過程中沒有對所有 <span class="arithmatex">\(x\)</span> 計算梯度，因此很難對所有 <span class="arithmatex">\(x\)</span> 都產生一個固定值。</p>
+<h2 id="comparisons">Comparisons<a class="headerlink" href="#comparisons" title="Permanent link">&para;</a></h2>
+<h3 id="result-comparisons">Result Comparisons<a class="headerlink" href="#result-comparisons" title="Permanent link">&para;</a></h3>
+<h4 id="imagenet">ImageNet<a class="headerlink" href="#imagenet" title="Permanent link">&para;</a></h4>
+<p>結果如下：</p>
+<p><img alt="" src="../../assets/images/exploring-simple-siamese-representation-learning/tables/4.png" /></p>
+<p>"+" 代表重製過，產生更好的結果（詳見附錄）。</p>
+<p>SimSiam 使用更少的 batch size，沒有負樣本也沒有 momentum encoder，且所有結果都比 SimCLR 更好。</p>
+<h4 id="transfer-learning">Transfer Learning<a class="headerlink" href="#transfer-learning" title="Permanent link">&para;</a></h4>
+<p>在 ImageNet 進行 pre-training，之後用到 object detection 和 instance segmentation。</p>
+<p><img alt="" src="../../assets/images/exploring-simple-siamese-representation-learning/tables/5.png" /></p>
+<h3 id="methodology-comparisons">Methodology Comparisons<a class="headerlink" href="#methodology-comparisons" title="Permanent link">&para;</a></h3>
+<p><img alt="" src="../../assets/images/exploring-simple-siamese-representation-learning/figures/3.png" /></p>
+<h4 id="relation-to-simclr">Relation to SimCLR<a class="headerlink" href="#relation-to-simclr" title="Permanent link">&para;</a></h4>
+<p>和 SimCLR 相比：</p>
+<ul>
+<li>SimSiam 沒有使用負樣本</li>
+<li>SimCLR 沒有 stop-grad 與 predictor</li>
+</ul>
+<p>因此，下面實驗以 SimCLR 為基準，加入 predictor 和 stop-grad 進行 ablation study：</p>
+<p><img alt="" src="../../assets/images/exploring-simple-siamese-representation-learning/figures/relation-to-SimCLR.png" /></p>
+<p>結果都對 SimCLR 沒有幫助。作者認為，可能 stop-grad 和 predictor 是另一個最佳化問題的因素，和 contrastive learning 不同。因此，這些對 contrastive learning 沒有幫助。</p>
+<h4 id="relation-to-swav">Relation to SwAV<a class="headerlink" href="#relation-to-swav" title="Permanent link">&para;</a></h4>
+<p>SimSiam 類似於 "SwAV without online clustering"。SwAV 中的 Sinkhorn-Knopp (SK) transform 也套用了 stop-grad 機制。</p>
+<p>下面實驗以 SwAV 為基準，加入 predictor 和移除 stop-grad 進行 ablation study：</p>
+<p><img alt="" src="../../assets/images/exploring-simple-siamese-representation-learning/figures/relation-to-SwAV.png" /></p>
+<p>SwAV 是一個 clustering 方法，因此不能移除 stop-grad。</p>
+<h4 id="relation-to-byol">Relation to BYOL<a class="headerlink" href="#relation-to-byol" title="Permanent link">&para;</a></h4>
+<p>SimSiam 類似於 "BYOL without the momentum encoder"</p>
+<p>如同 SimSiam 的 stop-grad 機制，BYOL 的 momentum encoder 也可以產生一個更平滑的 <span class="arithmatex">\(\eta\)</span>。可能存在其他的 optimizer 可以求解 <span class="arithmatex">\(\eta\)</span>。</p>
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<p>SimSiam: Siamese networks with simple design</p>
+<ul>
+<li>predictor <span class="arithmatex">\(h\)</span></li>
+<li>stop-gradient</li>
+<li>symmetrized loss</li>
+</ul>
+
+              
+
+  <!-- Giscus -->
+  <h2 id="__comments">Comments</h2>
+
+  <script src="https://giscus.app/client.js"
+      data-repo="aquastripe/paper-notes"
+      data-repo-id="MDEwOlJlcG9zaXRvcnkzMjg4MzkzMjI="
+      data-category="Announcements"
+      data-category-id="DIC_kwDOE5mwms4CO96G"
+      data-mapping="title"
+      data-reactions-enabled="1"
+      data-emit-metadata="0"
+      data-input-position="bottom"
+      data-theme="light"
+      data-lang="zh-TW"
+      crossorigin="anonymous"
+      async>
+  </script>
+
+  <!-- Reload on palette change -->
+  <script>
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object")
+      if (palette.color.scheme === "slate") {
+        var giscus = document.querySelector("script[src*=giscus]")
+        giscus.setAttribute("data-theme", "dark") 
+      }
+
+    /* Register event handlers after documented loaded */
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate" ? "dark" : "light"
+
+          /* Instruct Giscus to change theme */
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../../2020/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/" class="md-footer__link md-footer__link--prev" aria-label="Previous: An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../meta-pseudo-labels/" class="md-footer__link md-footer__link--next" aria-label="Next: Meta Pseudo Labels" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Meta Pseudo Labels
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy 2022 Hao-Ting Li. Content on this site is licensed under a <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a6c66575.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

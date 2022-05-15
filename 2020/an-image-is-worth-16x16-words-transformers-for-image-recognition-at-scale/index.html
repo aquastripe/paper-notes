@@ -1,0 +1,1464 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.15">
+    
+    
+      
+        <title>An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale - 電腦視覺與深度學習的論文筆記</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.c382b1dc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.cc9b2e1e.min.css">
+        
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="電腦視覺與深度學習的論文筆記" class="md-header__button md-logo" aria-label="電腦視覺與深度學習的論文筆記" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            電腦視覺與深度學習的論文筆記
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="電腦視覺與深度學習的論文筆記" class="md-nav__button md-logo" aria-label="電腦視覺與深度學習的論文筆記" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    電腦視覺與深度學習的論文筆記
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        關於本站
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tags/" class="md-nav__link">
+        Tags
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          2020
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="2020" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          2020
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    Introduction
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-work" class="md-nav__link">
+    Related Work
+  </a>
+  
+    <nav class="md-nav" aria-label="Related Work">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#transformer" class="md-nav__link">
+    Transformer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cnn-transformer" class="md-nav__link">
+    CNN + Transformer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    跟本篇相近的方法
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#benchmark-sota" class="md-nav__link">
+    增加訓練資料量可以在標準的 Benchmark 達到 SOTA
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#method" class="md-nav__link">
+    Method
+  </a>
+  
+    <nav class="md-nav" aria-label="Method">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vision-transformer-vit" class="md-nav__link">
+    Vision Transformer (ViT)
+  </a>
+  
+    <nav class="md-nav" aria-label="Vision Transformer (ViT)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#position-embedding" class="md-nav__link">
+    Position Embedding
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transformer-encoder" class="md-nav__link">
+    Transformer Encoder
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hybrid-architecture" class="md-nav__link">
+    Hybrid Architecture
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fine-tuning-and-higher-resolution" class="md-nav__link">
+    Fine-Tuning and Higher Resolution
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#experiments" class="md-nav__link">
+    Experiments
+  </a>
+  
+    <nav class="md-nav" aria-label="Experiments">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    Setup
+  </a>
+  
+    <nav class="md-nav" aria-label="Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#datasets" class="md-nav__link">
+    Datasets
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#model-variants" class="md-nav__link">
+    Model Variants
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#training-fine-tuning" class="md-nav__link">
+    Training &amp; Fine-Tuning
+  </a>
+  
+    <nav class="md-nav" aria-label="Training &amp; Fine-Tuning">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#traning" class="md-nav__link">
+    Traning
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fine-tuning" class="md-nav__link">
+    Fine-Tuning
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metrics" class="md-nav__link">
+    Metrics
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comparison-to-state-of-the-art" class="md-nav__link">
+    Comparison to State of the Art
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pre-training-data-requirements" class="md-nav__link">
+    Pre-training Data Requirements
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scaling-study" class="md-nav__link">
+    Scaling Study
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspecting-vision-transformer" class="md-nav__link">
+    Inspecting Vision Transformer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#self-supervision" class="md-nav__link">
+    Self-Supervision
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    Conclusion
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix" class="md-nav__link">
+    Appendix
+  </a>
+  
+    <nav class="md-nav" aria-label="Appendix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-multihead-self-attention" class="md-nav__link">
+    A. Multihead Self-Attention
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-experiment-details" class="md-nav__link">
+    B. Experiment Details
+  </a>
+  
+    <nav class="md-nav" aria-label="B. Experiment Details">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#b1-training" class="md-nav__link">
+    B.1 Training
+  </a>
+  
+    <nav class="md-nav" aria-label="B.1 Training">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#b11-fine-tuning" class="md-nav__link">
+    B.1.1 Fine-Tuning
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b12-self-supervision" class="md-nav__link">
+    B.1.2 Self-Supervision
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-additional-results" class="md-nav__link">
+    C. Additional Results
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          2021
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="2021" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          2021
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2021/exploring-simple-siamese-representation-learning/" class="md-nav__link">
+        Exploring Simple Siamese Representation Learning (SimSiam)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2021/meta-pseudo-labels/" class="md-nav__link">
+        Meta Pseudo Labels
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    Introduction
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-work" class="md-nav__link">
+    Related Work
+  </a>
+  
+    <nav class="md-nav" aria-label="Related Work">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#transformer" class="md-nav__link">
+    Transformer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cnn-transformer" class="md-nav__link">
+    CNN + Transformer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    跟本篇相近的方法
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#benchmark-sota" class="md-nav__link">
+    增加訓練資料量可以在標準的 Benchmark 達到 SOTA
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#method" class="md-nav__link">
+    Method
+  </a>
+  
+    <nav class="md-nav" aria-label="Method">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vision-transformer-vit" class="md-nav__link">
+    Vision Transformer (ViT)
+  </a>
+  
+    <nav class="md-nav" aria-label="Vision Transformer (ViT)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#position-embedding" class="md-nav__link">
+    Position Embedding
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transformer-encoder" class="md-nav__link">
+    Transformer Encoder
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hybrid-architecture" class="md-nav__link">
+    Hybrid Architecture
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fine-tuning-and-higher-resolution" class="md-nav__link">
+    Fine-Tuning and Higher Resolution
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#experiments" class="md-nav__link">
+    Experiments
+  </a>
+  
+    <nav class="md-nav" aria-label="Experiments">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    Setup
+  </a>
+  
+    <nav class="md-nav" aria-label="Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#datasets" class="md-nav__link">
+    Datasets
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#model-variants" class="md-nav__link">
+    Model Variants
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#training-fine-tuning" class="md-nav__link">
+    Training &amp; Fine-Tuning
+  </a>
+  
+    <nav class="md-nav" aria-label="Training &amp; Fine-Tuning">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#traning" class="md-nav__link">
+    Traning
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fine-tuning" class="md-nav__link">
+    Fine-Tuning
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metrics" class="md-nav__link">
+    Metrics
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comparison-to-state-of-the-art" class="md-nav__link">
+    Comparison to State of the Art
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pre-training-data-requirements" class="md-nav__link">
+    Pre-training Data Requirements
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scaling-study" class="md-nav__link">
+    Scaling Study
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspecting-vision-transformer" class="md-nav__link">
+    Inspecting Vision Transformer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#self-supervision" class="md-nav__link">
+    Self-Supervision
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    Conclusion
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix" class="md-nav__link">
+    Appendix
+  </a>
+  
+    <nav class="md-nav" aria-label="Appendix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-multihead-self-attention" class="md-nav__link">
+    A. Multihead Self-Attention
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-experiment-details" class="md-nav__link">
+    B. Experiment Details
+  </a>
+  
+    <nav class="md-nav" aria-label="B. Experiment Details">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#b1-training" class="md-nav__link">
+    B.1 Training
+  </a>
+  
+    <nav class="md-nav" aria-label="B.1 Training">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#b11-fine-tuning" class="md-nav__link">
+    B.1.1 Fine-Tuning
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b12-self-supervision" class="md-nav__link">
+    B.1.2 Self-Supervision
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-additional-results" class="md-nav__link">
+    C. Additional Results
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+  
+                
+
+  
+
+  <nav class="md-tags" >
+    
+      
+        <a href="../../tags/#iclr" class="md-tag">
+          ICLR
+        </a>
+      
+    
+      
+        <a href="../../tags/#visiontransformer" class="md-tag">
+          VisionTransformer
+        </a>
+      
+    
+      
+        <a href="../../tags/#vit" class="md-tag">
+          ViT
+        </a>
+      
+    
+  </nav>
+
+
+
+<h1 id="an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale">An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale<a class="headerlink" href="#an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale" title="Permanent link">&para;</a></h1>
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
+<p>目前 ResNet-like 模型主宰整個影像辨識領域。受到 Transformer 的啟發，這篇論文嘗試使用 Transformer 解決影像辨識的問題。作法是將影像拆成許多個 patches，把這些 patches 當作 NLP 模型的序列作為輸入，以監督式學習的方式訓練分類器。</p>
+<p>在訓練中型 dataset (e.g. ImageNet) 這個模型的準確率較差一些，原因是缺乏 <strong>inductive biases</strong> (歸納偏置 <a href="https://en.wikipedia.org/wiki/Inductive_bias">wiki</a>) ：翻譯任務的 equivariance (等變性) 與 locality (局部性)，在資料量少的情況下 generalize (泛化) 。</p>
+<blockquote>
+<p>Transformers lack some of the inductive biases inherent to CNNs, such as translation equivariance and locality, and therefore do not generalize well when trained on insufficient amounts of data.</p>
+</blockquote>
+<p>但是如果模型訓練在大型 dataset (數量在 14M-300M) 就會 inductive bias。</p>
+<blockquote>
+<p>We find that large scale training trumps inductive bias.</p>
+</blockquote>
+<h2 id="related-work">Related Work<a class="headerlink" href="#related-work" title="Permanent link">&para;</a></h2>
+<h3 id="transformer">Transformer<a class="headerlink" href="#transformer" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Vaswani et al. (2017): 發明 Transformer，在 NLP tasks 達到 SOTA。</li>
+<li>BERT (Devlin et al., 2019): denoising self-supervised pretrained on large corpora (在大型語料庫進行預訓練), </li>
+<li>GPT (Radford et al., 2018; 2019; Brown et al., 2020): uses language modeling as its pre-training task</li>
+</ul>
+<p>Naive 的 self-attention 應用：讓一個 pixel 和其他所有的 pixels 一一計算 attention。這樣做的問題是在真實影像上的計算複雜度過高。所以其他人嘗試近似的方法：</p>
+<ul>
+<li>Parmar et al. (2018): 只在相鄰的區域計算 self-attention 而非全域。</li>
+<li>Such local multi-head dot-product self attention blocks can completely replace convolutions (Ramachandran et al., 2019; Cordonnier et al., 2020; Zhao et al., 2020). </li>
+<li>Sparse Transformers (Child et al., 2019): employ scalable approximations to global self-attention in order to be applicable to images</li>
+<li>(Weissenborn et al., 2019): 在可變長度的區塊計算 attention</li>
+<li>(Ho et al., 2019; Wang et al., 2020a): 在單一軸上計算 attention</li>
+</ul>
+<p>這些方法結果很好，但需要複雜的設計才能在硬體加速器 (hardware accelerators) 有效率的計算。</p>
+<blockquote>
+<p>Many of these specialized attention architectures demonstrate promising results on computer vision tasks, but require complex engineering to be implemented efficiently on hardware accelerators.</p>
+</blockquote>
+<h3 id="cnn-transformer">CNN + Transformer<a class="headerlink" href="#cnn-transformer" title="Permanent link">&para;</a></h3>
+<ul>
+<li>(Bello et al., 2019): augmenting feature maps for image classification</li>
+<li>by further processing the output of a CNN using self-attention, e.g. </li>
+<li>for object detection (Hu et al., 2018; Carion et al., 2020)</li>
+<li>video processing (Wang et al., 2018; Sun et al., 2019)</li>
+<li>image classification (Wu et al., 2020)</li>
+<li>unsupervised object discovery (Locatello et al., 2020)</li>
+<li>unified text-vision tasks (Chen et al., 2020c; Lu et al., 2019; Li et al., 2019)</li>
+</ul>
+<h3 id="_1">跟本篇相近的方法<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>iGPT (Chen et al., 2020a): 在減少影像解析度和色彩空間以後使用 Transformer，以 unsupervised learning 方式訓練生成模型
+    &gt; and the resulting representation can then be fine-tuned or probed linearly for classification performance, achieving a maximal accuracy of 72% on ImageNet.</li>
+</ul>
+<h3 id="benchmark-sota">增加訓練資料量可以在標準的 Benchmark 達到 SOTA<a class="headerlink" href="#benchmark-sota" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Our work adds to the increasing collection of papers that explore image recognition at larger scales than the standard ImageNet dataset. The use of additional data sources allows to achieve state-of-the-art results on standard benchmarks (Mahajan et al., 2018; Touvron et al., 2019; Xie et al., 2020). Moreover, Sun et al. (2017) study how CNN performance scales with dataset size, and Kolesnikov et al. (2020); Djolonga et al. (2020) perform an empirical exploration of CNN transfer learning from large scale datasets such as ImageNet-21k and JFT-300M. We focus on these two latter datasets as well, but train Transformers instead of ResNet-based models used in prior works.</p>
+</blockquote>
+<h2 id="method">Method<a class="headerlink" href="#method" title="Permanent link">&para;</a></h2>
+<p>在模型設計上，盡可能的和原本的 Transformer 長得一樣。這樣做的好處是 Transformer 的改進模型也可以透過簡單的調整來應用這篇的方法。</p>
+<blockquote>
+<p>An advantage of this intentionally simple setup is that scalable NLP Transformer architectures – and their efficient implementations – can be used almost out of the box.</p>
+</blockquote>
+<h3 id="vision-transformer-vit">Vision Transformer (ViT)<a class="headerlink" href="#vision-transformer-vit" title="Permanent link">&para;</a></h3>
+<p><img alt="" src="../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/1.png" /></p>
+<p>標準的 Transformer 接收 1D 的序列 token embeddings 資料作為輸入。為了處理 2D 的影像，利用 reshape <span class="arithmatex">\(x \in R^{H \times W \times C}\)</span> into a sequence of flattened 2D patches <span class="arithmatex">\(\mathbf{x}_{p} \in R^{N \times (P^{2} \cdot C)}\)</span>。</p>
+<ul>
+<li><span class="arithmatex">\((H, W)\)</span>: 原本影像的解析度</li>
+<li><span class="arithmatex">\(C\)</span>: channels 數量</li>
+<li><span class="arithmatex">\((P, P)\)</span>: 每個 patch 的解析度</li>
+<li><span class="arithmatex">\(N = HW/P^2\)</span>: patches 的數量</li>
+<li><span class="arithmatex">\(D\)</span>: constant latent vector size</li>
+</ul>
+<p><span class="arithmatex">\(D\)</span> 是所有 layers 輸出的維度，所以輸入的 patches 利用一個 trainable linear projection 映射到這個維度，把這個 projection 輸出結果當作 patch embedding。</p>
+<p>類似 BERT 的 <code>[class]</code> token，這裡前置一個可學習的類別 embedding 在 patches (<span class="arithmatex">\(z_0^0 = \mathbf{x}_{class}\)</span>)。Transformer encoder (<span class="arithmatex">\(\mathbf{z}_L^0\)</span>) 的狀態當作 image representation <span class="arithmatex">\(\mathbf{y}\)</span>。分類器 (classification head) 的實作方式，分別在</p>
+<ol>
+<li>pre-training time (預訓練階段): 一層 hidden layer 的 MLP</li>
+<li>fine-tuning time (微調階段): 一層 linear layer</li>
+</ol>
+<blockquote>
+<p>Similar to BERT's <code>[class]</code> token, we prepend a learnable embedding to the sequence of embedded patches (<span class="arithmatex">\(z_0^0 = \mathbf{x}_{class}\)</span>), whose state at the output of the Transformer encoder (<span class="arithmatex">\(\mathbf{z}_L^0\)</span>) serves as the image representation <span class="arithmatex">\(\mathbf{y}\)</span> (Eq. 4). Both during pre-training and fine-tuning, a classification head is attached to (<span class="arithmatex">\(\mathbf{z}_L^0\)</span>) . The classification head is implemented by a MLP with one hidden layer at pre-training time and by a single linear layer at fine-tuning time.</p>
+</blockquote>
+<h4 id="position-embedding">Position Embedding<a class="headerlink" href="#position-embedding" title="Permanent link">&para;</a></h4>
+<p>根據實驗結果 (Appendix D.3) 使用 2D-aware position embedding 的效果並不顯著，因此使用標準的 1D position embeddings。Embedding 最後輸入到 encoder。</p>
+<blockquote>
+<p>Position embeddings are added to the patch embeddings to retain positional information. We use standard learnable 1D position embeddings, since we have not observed significant performance gains from using more advanced 2D-aware position embeddings (Appendix D.3). The resulting sequence of embedding vectors serves as input to the encoder.</p>
+</blockquote>
+<h4 id="transformer-encoder">Transformer Encoder<a class="headerlink" href="#transformer-encoder" title="Permanent link">&para;</a></h4>
+<p>Encoder 包含：</p>
+<ul>
+<li>Multiheaded self-attention (MSA)</li>
+<li>MLP blocks (Eq. 2, 3)</li>
+<li>兩層</li>
+<li>GELU</li>
+<li>Layernorm (LN) 在每個 block 之前</li>
+<li>Residual connections 在每個 block 之後</li>
+</ul>
+<div class="arithmatex">\[
+\begin{aligned}
+\mathbf{z}_{0} &amp;=\left[\mathbf{x}_{\text {class }} ; \mathbf{x}_{p}^{1} \mathbf{E} ; \mathbf{x}_{p}^{2} \mathbf{E} ; \cdots ; \mathbf{x}_{p}^{N} \mathbf{E}\right]+\mathbf{E}_{\text {pos }}, &amp; \mathbf{E} \in \mathbb{R}^{\left(P^{2} \cdot C\right) \times D}, \mathbf{E}_{\text {pos }} \in \mathbb{R}^{(N+1) \times D} \\
+\mathbf{z}_{\ell}^{\prime} &amp;=\operatorname{MSA}\left(\operatorname{LN}\left(\mathbf{z}_{\ell-1}\right)\right)+\mathbf{z}_{\ell-1}, &amp; \ell=1 \ldots L \\
+\mathbf{z}_{\ell} &amp;=\operatorname{MLP}\left(\operatorname{LN}\left(\mathbf{z}_{\ell}^{\prime}\right)\right)+\mathbf{z}_{\ell}^{\prime}, &amp; \ell=1 \ldots L \\
+\mathbf{y} &amp;=\operatorname{LN}\left(\mathbf{z}_{L}^{0}\right) &amp;
+\end{aligned}
+\]</div>
+<p>數學式的解讀：</p>
+<ul>
+<li><span class="arithmatex">\(\mathbf{x}_p^i\)</span>: 輸入的第 i 個 patch</li>
+<li><span class="arithmatex">\(\mathbf{x}_{class}\)</span>: 類別的 embedding</li>
+<li>更細節的：如何做出 embedding? 使用一個矩陣 (類別數)x(embedding size)</li>
+<li><span class="arithmatex">\(\mathbf{z}_j\)</span>: 第 j 層的輸入</li>
+</ul>
+<h4 id="hybrid-architecture">Hybrid Architecture<a class="headerlink" href="#hybrid-architecture" title="Permanent link">&para;</a></h4>
+<p>可以用 CNN 的 feature maps 替代原本的 raw image patches，稱為 hybrid model。</p>
+<p>Patches 可能大小是 1x1，因此輸入的序列可以透過簡單的攤平 (flatten) feature maps 的維度再投影到 Transformer 的維度。</p>
+<blockquote>
+<p>As a special case, the patches can have spatial size 1x1, which means that the input sequence is obtained by simply flattening the spatial dimensions of the feature map and projecting to the Transformer dimension. The classification input embedding and position embeddings are added as described above.</p>
+</blockquote>
+<h3 id="fine-tuning-and-higher-resolution">Fine-Tuning and Higher Resolution<a class="headerlink" href="#fine-tuning-and-higher-resolution" title="Permanent link">&para;</a></h3>
+<p>訓練策略：在大型 dataset pre-train ViT，然後在小型 downstream tasks 進行 fine-tune。</p>
+<p>Fine-tune 作法：移除 prediction head，然後加入以 0 初始化的 <span class="arithmatex">\(D \times K\)</span> 的 feedforward layer，其中 <span class="arithmatex">\(K\)</span> 是 downstream 類別的數量。</p>
+<blockquote>
+<p>It is often beneficial to fine-tune at higher resolution than pre-training (Touvron et al., 2019; Kolesnikov et al., 2020). When feeding images of higher resolution, we keep the patch size the same, which results in a larger effective sequence length.</p>
+</blockquote>
+<p>Vision Transformer 可以處理任意的序列長度，但是 pre-trained position embeddings 可能就會失去意義。所以這裡根據原本影像的解析度，使用 2D interpolation 計算 pre-trained position embeddings。</p>
+<blockquote>
+<p>Note that this resolution adjustment and patch extraction are the only points at which an inductive bias about the 2D structure of the images is manually injected into the Vision Transformer.</p>
+</blockquote>
+<p>注意：解析度的調整和擷取 patch 的方式是這個 Vision Transformer 模型中唯一對於 2D 影像結構的 <strong>歸納偏誤（Inductive Bias）</strong>。</p>
+<div class="admonition inductive bias">
+<p class="admonition-title">Inductive</p>
+<p>In machine learning, one aims to construct algorithms that are able to learn to predict a certain target output. To achieve this, the learning algorithm is presented some training examples that demonstrate the intended relation of input and output values. Then the learner is supposed to approximate the correct output, even for examples that have not been shown during training. Without any additional assumptions, this problem cannot be solved since unseen situations might have an arbitrary output value. The kind of necessary assumptions about the nature of the target function are subsumed in the phrase inductive bias.[1][2]</p>
+<ul>
+<li>[1]: Mitchell, T. M. (1980), <em>The need for biases in learning generalizations</em>, CBM-TR 5-110, New Brunswick, New Jersey, USA: Rutgers University, CiteSeerX 10.1.1.19.5466</li>
+<li>[2]: DesJardins, M.; Gordon, D. F. (1995), <em>Evaluation and selection of biases in machine learning</em>, Machine Learning Journal, 5:–7</li>
+</ul>
+</div>
+<h2 id="experiments">Experiments<a class="headerlink" href="#experiments" title="Permanent link">&para;</a></h2>
+<h3 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">&para;</a></h3>
+<h4 id="datasets">Datasets<a class="headerlink" href="#datasets" title="Permanent link">&para;</a></h4>
+<ul>
+<li>ILSVRC-2012 ImageNet: 1k classes and 1.3M images</li>
+<li>ImageNet-21k (Deng et al., 2009): 21k classes and 14M images</li>
+<li>JFT (Sun et al., 2017): 18k classes and 303M high-resolution images</li>
+</ul>
+<blockquote>
+<p>We de-duplicate the pre-training datasets w.r.t. the test sets of the downstream tasks following Kolesnikov et al. (2020). We transfer the models trained on these dataset to several benchmark tasks: ImageNet on the original validation labels and the cleaned-up ReaL labels (Beyer et al., 2020), CIFAR-10/100 (Krizhevsky, 2009), Oxford-IIIT Pets (Parkhi et al., 2012), and Oxford Flowers-102 (Nilsback &amp; Zisserman, 2008). For these datasets, pre-processing follows Kolesnikov et al. (2020).</p>
+</blockquote>
+<ul>
+<li>19-task VTAB classification suite (Zhai et al., 2019b): low-data transfer to diverse tasks, using 1,000 training examples per task. The tasks are divided into
+three groups:</li>
+<li><em>Natural</em> – tasks like the above, Pets, CIFAR, etc.</li>
+<li><em>Specialized</em> – medical and satellite imagery</li>
+<li><em>Structured</em> – tasks that require geometric understanding like localization</li>
+</ul>
+<p>參考 <a href="https://google-research.github.io/task_adaptation/">Visual Task Adaptation Benchmark</a> 的說明：</p>
+<blockquote>
+<p>The Visual Task Adaptation Benchmark (VTAB) is a diverse and challenging suite of tasks, designed to evaluate general visual representations.
+VTAB defines a good general visual representation as one that yields good performance on unseen tasks, when trained on limited task-specific data. VTAB places no restrictions on how the representations are used, for example, frozen feature extraction, fine-tuning, and other forms of transfer to the evaluation tasks are permitted. Similarly, representations may be pre-trained on any data, VTAB permits supervised, unsupervised, or other pre-training strategy. There is one constraint: the evaluation datasets must not be used during pre-training. This constraint is designed to mitigate overfitting to the evaluation tasks.
+The benchmark consists of 19 tasks, drawn from a variety of domains, and with various semantics. All tasks are framed as classification problems to facilitate a consistent API for pre-trained models. Algorithms should not contain any task-dependent logic, for example, the same hyperparameter sweep should be used for all tasks. VTAB may also be used to evaluate techniques, other than representation learning, that improve performance across a variety of tasks: such as architectures, pre-processing functions, or optimizers.</p>
+</blockquote>
+<p>簡單來說，這個 Dataset 的特色是用來評估：</p>
+<ul>
+<li>low-data: 少量的訓練資料</li>
+<li>transfer to diverse tasks: 轉移到變化大的任務上</li>
+<li>1,000 training examples per task: 只有 1,000 筆訓練資料</li>
+</ul>
+<p>VTAB 定義一個好的 <strong>visual representation</strong> 是能夠在很少量的資料上進行訓練，然後在 unseen 的任務上達到很好的性能。這個 visual representation 沒有限定怎麼使用，可以 pre-trained 在任何 dataset 上，或是其他任何策略。唯一的限制是 evaluation datasets 不可以在 pre-training 階段使用（廢話）。</p>
+<h4 id="model-variants">Model Variants<a class="headerlink" href="#model-variants" title="Permanent link">&para;</a></h4>
+<p>根據 BERT (Devlin et al., 2019) 來設定 ViT，如 Table 1。</p>
+<p><img alt="" src="../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/tab-1.png" /></p>
+<p>Base 和 Large 直接從 BERT 抄來的，然後另外再使用更大的 Huge 設定。</p>
+<p>模型表示法: ViT-L/16 代表使用 Large 的設定，然後影像解析度設定為 <span class="arithmatex">\(16 \times 16\)</span> 。須特別注意 Transformer 的序列長度和 patch size 的平方成反比。</p>
+<p>Baseline</p>
+<ul>
+<li>ResNet (BiT): 使用 ResNet 然後把 Batch Normalization 改成 Group Normalization (Wu &amp; He, 2018)，在加上 standardized convolutions (Salimans &amp; Kingma, 2016)。這些改動有助於轉移性 (Kolesnikov et al., 2020)。</li>
+<li>Hybrids: 用 <span class="arithmatex">\(1 \times 1\)</span> 的 patches 當作 intermediate feature maps 傳入 ViT 模型。</li>
+</ul>
+<p>為了試驗不同的序列長度 (給 ViT 的 feature maps):</p>
+<ul>
+<li>拿 ResNet50 stage 4 的輸出</li>
+<li>移除 stage 4，改放相同層數在 stage 3 (保持相同層數)，然後取出輸出。這個作法可以得到 4 倍長度的序列。</li>
+</ul>
+<h4 id="training-fine-tuning">Training &amp; Fine-Tuning<a class="headerlink" href="#training-fine-tuning" title="Permanent link">&para;</a></h4>
+<h5 id="traning">Traning<a class="headerlink" href="#traning" title="Permanent link">&para;</a></h5>
+<ul>
+<li>Batch size: <span class="arithmatex">\(4096\)</span></li>
+<li>Optimizer: Adam with <span class="arithmatex">\(\beta_1 = 0.9, \beta_2 = 0.999\)</span></li>
+<li>Weight decay: <span class="arithmatex">\(0.1\)</span></li>
+<li>Linear learning rate warmup and decay</li>
+</ul>
+<blockquote>
+<p>Appendix D.1 shows that, in contrast to common practices, Adam works slightly better than SGD for ResNets in our setting</p>
+</blockquote>
+<h5 id="fine-tuning">Fine-Tuning<a class="headerlink" href="#fine-tuning" title="Permanent link">&para;</a></h5>
+<ul>
+<li>Batch size: <span class="arithmatex">\(512\)</span></li>
+<li>SGD with momentum (see Appendix B.1.1)</li>
+<li>針對 ImageNet 使用更大的解析度</li>
+<li>also used Polyak &amp; Juditsky (1992) averaging withfactor of 0.9999 (Ramachandran et al., 2019; Wang et al., 2020b)</li>
+</ul>
+<h4 id="metrics">Metrics<a class="headerlink" href="#metrics" title="Permanent link">&para;</a></h4>
+<p>We report results on downstream datasets either through few-shot or fine-tuning accuracy.
+- Fine-tuning accuracies capture the performance of each model after fine-tuning it on the respective dataset. (廢話)
+- Few-shot accuracies are obtained by solving a <strong>regularized linear regression problem</strong> that maps the (frozen) representation of a subset of training images to <span class="arithmatex">\({−1, 1}^K\)</span> target vectors.
+  - 透過 映射固定的 representation 到 <span class="arithmatex">\({−1, 1}^K\)</span> 的 target vectors 來解線性回歸問題</p>
+<h3 id="comparison-to-state-of-the-art">Comparison to State of the Art<a class="headerlink" href="#comparison-to-state-of-the-art" title="Permanent link">&para;</a></h3>
+<p>選手</p>
+<ul>
+<li>ViT-H/14</li>
+<li>ViT-L/16</li>
+</ul>
+<p>比較對象</p>
+<ul>
+<li>Big Transfer (BiT) (Kolesnikov et al., 2020): which performs supervised transfer learning with large ResNets.</li>
+<li>Noisy Student (Xie et al., 2020): a large EfficientNet trained using semi-supervised learning on ImageNet and JFT-300M with the labels removed.</li>
+<li>SOTA on ImageNet</li>
+</ul>
+<p>訓練設備</p>
+<blockquote>
+<p>All models were trained on TPUv3 hardware, and we report the number of TPUv3-core-days taken to pre-train each of them, that is, the number of TPUv3 cores (2 per chip) used for training multiplied by the training time in days.</p>
+</blockquote>
+<p><img alt="" src="../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/tab-2.png" /></p>
+<p>從 Table 2 可以看出</p>
+<ul>
+<li>ViT-L/16 model pre-trained on JFT-300M 暴打 BiT-L，其中 ViT-L/16 訓練所需要的計算量更少</li>
+<li>ViT-H/14 性能更好，而且計算量還是比 SOTA 更少</li>
+<li>不過其他 hyper-parameters 也會影響訓練結果，所以在 Section 4.4 有討論更詳細比較結果。</li>
+</ul>
+<h3 id="pre-training-data-requirements">Pre-training Data Requirements<a class="headerlink" href="#pre-training-data-requirements" title="Permanent link">&para;</a></h3>
+<p>討論 dataset size 的重要性</p>
+<ol>
+<li>Pre-train ViT models on datasets of increasing size: ImageNet, ImageNet-21k, and JFT-300M (Figure 3)</li>
+<li>weight decay</li>
+<li>dropout</li>
+<li>label smoothing</li>
+<li>Train our models on random subsets of 9M, 30M, and 90M as well as the full JFT-300M dataset</li>
+</ol>
+<p><img alt="" src="../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/3-4.png" /></p>
+<p>Figure 3 實驗了從各種 dataset 訓練，然後 fine-tune 到 ImageNet 的結果。從實驗結果可以看出</p>
+<ul>
+<li>在 ImageNet 上面 pre-trained，ViT-Large 比 ViT-Base 效果還差。</li>
+<li>在 ImageNet-21k 上面 pre-trained，兩個效果差不多。</li>
+<li>在 JFT-300M 上面 pre-trained，模型越大效果越好。</li>
+<li>圖上灰色區域是 BiT 不同大小的效果，可以看出 BiT 在 ImageNet 效果最好，但在另外兩個 ViT 比較好。</li>
+</ul>
+<p>Figure 4 實驗了 JFT 在各種數量的 pre-training，然後在 ImageNet 上面進行 5-shot learning。實驗結果可以看出</p>
+<ul>
+<li>ViT 在較小的 dataset 比 ResNet 的 visual representation 有更多過擬合</li>
+<li>在較大的 dataset ViT 效果較好</li>
+</ul>
+<blockquote>
+<p>This result reinforces the intuition that the convolutional inductive bias is useful for smaller datasets, but for larger ones, learning the relevant patterns is sufficient, even beneficial</p>
+</blockquote>
+<h3 id="scaling-study">Scaling Study<a class="headerlink" href="#scaling-study" title="Permanent link">&para;</a></h3>
+<p>Pre-training 的運算量 (單位: exaFLOPs) 和 transfer accuracy 的關係，如 Figure 5。</p>
+<p>模型設定:</p>
+<ul>
+<li>ResNets</li>
+<li>pre-trained for 7 epochs<ul>
+<li>R50x1</li>
+<li>R50x2</li>
+<li>R101x1</li>
+<li>R152x1</li>
+<li>R152x2</li>
+</ul>
+</li>
+<li>pre-trained for 14 epochs<ul>
+<li>R152x2</li>
+<li>R200x3</li>
+</ul>
+</li>
+<li>ViT</li>
+<li>pre-trained for 7 epochs<ul>
+<li>ViT-B/32</li>
+<li>ViT-B/16</li>
+<li>ViT-L/32</li>
+<li>ViT-L/16</li>
+</ul>
+</li>
+<li>pre-trained for 14 epochs<ul>
+<li>ViT-L/16</li>
+<li>ViT-H/14</li>
+</ul>
+</li>
+<li>Hybrid</li>
+<li>pre-trained for 7 epochs<ul>
+<li>R50+ViT-B/32</li>
+<li>R50+ViT-B/16</li>
+<li>R50+ViT-L/32</li>
+<li>R50+ViT-L/16</li>
+</ul>
+</li>
+<li>pre-trained for 14 epochs<ul>
+<li>R50+ViT-L/16</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>(for hybrids, the number at the end of the model name stands not for the patch size, but for the total dowsampling ratio in the ResNet backbone)</p>
+</blockquote>
+<p><img alt="" src="../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/5.png" />
+<img alt="" src="../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/tab-6.png" /></p>
+<p>從結果可以看出:</p>
+<ul>
+<li>在 performance/compute trade-off (可以理解成 CP 值) ViT 暴打 ResNets。相同的性能，運算量大約少 2-4 倍。</li>
+<li>Hybrid 在小運算量效果比 ViT 好一點，在大運算量差不多。</li>
+<li>ViT 似乎沒有飽和，可能還可以更進一步使用更大的模型。</li>
+</ul>
+<h3 id="inspecting-vision-transformer">Inspecting Vision Transformer<a class="headerlink" href="#inspecting-vision-transformer" title="Permanent link">&para;</a></h3>
+<p><img alt="" src="../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/7.png" /></p>
+<p>Eq (1):</p>
+<div class="arithmatex">\[
+\mathbf{z}_{0} =\left[\mathbf{x}_{\text {class }} ; \mathbf{x}_{p}^{1} \mathbf{E} ; \mathbf{x}_{p}^{2} \mathbf{E} ; \cdots ; \mathbf{x}_{p}^{N} \mathbf{E}\right]+\mathbf{E}_{\text {pos }}, \mathbf{E} \in \mathbb{R}^{\left(P^{2} \cdot C\right) \times D}, \mathbf{E}_{\text {pos }} \in \mathbb{R}^{(N+1) \times D} \\
+\]</div>
+<p>ViT 的第一層線性投影一個攤平的 patches 到低維空間。Figure 7 左邊可以看到，訓練完成以後，前幾大的 embedding filters。</p>
+<blockquote>
+<p>The components resemble plausible basis functions for a low-dimensional representation of the fine structure within each patch.</p>
+</blockquote>
+<ul>
+<li>resemble: 像是，類似</li>
+<li>plausible: 合理的</li>
+</ul>
+<p>這些 components 看起來學習到了每個 patch 的細微結構的低維 representation basis function。</p>
+<p>在投影過後，position embedding 會加入 patch representations。Figure 7 的中間可以看出模型學習到如何對影像上面的距離進行編碼。越近的 patches 有更相似的 position embeddings。而且，在相同的 row/column 有相似的 embeddings。在附錄 D.3 裡面可以見到模型在 position embedding 學習到三角函數的結構，這也可以用來解釋為何自幹一個 2D-aware embedding 不會有更好的改進。</p>
+<p>Self-attention 讓 ViT 從整張影像整合資訊，即使在最低層的 layers。Figure 7 的右邊，根據 attention weights 計算了影像空間的平均距離。這個 <em>attention distance</em> 類似於 CNN 的接受域 (receptive field) 。在低層，有些 attention head 可以發揮注意力在整張影像，可以看出模型有能力理解影像全域的資訊；另外一些 attention head 一致性的較少的 attention distance (局部化) 。</p>
+<blockquote>
+<p>This highly localized attention is less pronounced in hybrid models that apply a ResNet before the Transformer (Figure 7, right), suggesting that it may serve a similar function as early convolutional layers in CNNs.</p>
+</blockquote>
+<p>而且，attention distance 隨著網路的深度增加。我們也發現模型注意力落在和影像分類語意相關的區域，如 Figure 6。</p>
+<p><img alt="" src="../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/6.png" /></p>
+<h3 id="self-supervision">Self-Supervision<a class="headerlink" href="#self-supervision" title="Permanent link">&para;</a></h3>
+<p>Transformers 擁有良好的擴充性 (scalability) 和 自我監督預訓練學習 (self-supervised pre-training)。模仿 BERT 的作法，這篇也嘗試 <em>masked patch prediction</em>。Self-supervised pre-training 在 ImageNet 上的結果和白手起家相比提昇了 <span class="arithmatex">\(2\%\)</span>，但比 supervised pre-training 差了 <span class="arithmatex">\(4\%\)</span>。Appendix B.1.2 有進一步的細節討論。</p>
+<h2 id="conclusion">Conclusion<a class="headerlink" href="#conclusion" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>We have explored the direct application of Transformers to image recognition. Unlike prior works using self-attention in computer vision, we do not introduce any image-specific inductive biases into the architecture. Instead, we interpret an image as a sequence of patches and process it by a standard Transformer encoder as used in NLP. This simple, yet scalable, strategy works surprisingly well when coupled with pre-training on large datasets. Thus, Vision Transformer matches or exceeds the state of the art on many image classification datasets, whilst being relatively cheap to pre-train.</p>
+<p>While these initial results are encouraging, many challenges remain. One is to apply ViT to other computer vision tasks, such as detection and segmentation. Our results, coupled with those in Carion et al. (2020), indicate the promise of this approach. Another challenge is to continue exploring self-supervised pre-training methods. Our initial experiments show improvement from self-supervised pre-training, but there is still large gap between self-supervised and large-scale supervised pre-training. Finally, further scaling of ViT would likely lead to improved performance.</p>
+</blockquote>
+<p>尚未探索完畢的區域:</p>
+<ul>
+<li>detection</li>
+<li>segmentation</li>
+<li>self-supervised pre-training (目前實驗結果跟 supervised pre-training 有很大差距)</li>
+<li>scaling of ViT: 加大模型參數可能可以進一步改進效能，目前還沒探底。</li>
+</ul>
+<h2 id="appendix">Appendix<a class="headerlink" href="#appendix" title="Permanent link">&para;</a></h2>
+<p><img alt="" src="../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/9.png" />
+<img alt="" src="../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/10.png" /></p>
+<h3 id="a-multihead-self-attention">A. Multihead Self-Attention<a class="headerlink" href="#a-multihead-self-attention" title="Permanent link">&para;</a></h3>
+<p>標準的 <span class="arithmatex">\(\mathbf{qkv}\)</span> self-attention (SA, Vaswani et al. (2017)) 計算方式如 Eq (5-7)</p>
+<p>Eq (5-7):</p>
+<div class="arithmatex">\[
+\begin{array}{rlrl}
+{[\mathbf{q}, \mathbf{k}, \mathbf{v}]} &amp; =\mathbf{z} \mathbf{U}_{q k v} &amp; \mathbf{U}_{q k v} &amp; \in \mathbb{R}^{D \times 3 D_{h}}, \\
+A &amp; =\operatorname{softmax}\left(\mathbf{q} \mathbf{k}^{\top} / \sqrt{D_{h}}\right) &amp; A &amp; \in \mathbb{R}^{N \times N}, \\
+\operatorname{SA}(\mathbf{z}) &amp; =A \mathbf{v} . &amp;
+\end{array}
+\]</div>
+<ul>
+<li><span class="arithmatex">\(\mathbf{z}\)</span>: input sequence</li>
+<li><span class="arithmatex">\(A_{ij}\)</span>: attention weights, 基於 query <span class="arithmatex">\(\mathbf{q}^i\)</span> 和 key <span class="arithmatex">\(\mathbf{k}^j\)</span> 計算成對的相似性 (pairwise similarity)。</li>
+</ul>
+<p>Multihead self-attention (MSA) 是 SA 的擴展，利用 <span class="arithmatex">\(k\)</span> 個 heads 平行地進行計算。為了方便計算以及在改變 <span class="arithmatex">\(k\)</span> 時參數量保持一致， <span class="arithmatex">\(D_h\)</span> 通常設定成 <span class="arithmatex">\(D/k\)</span>。</p>
+<p>Eq (8):</p>
+<div class="arithmatex">\[
+\operatorname{MSA}(\mathbf{z})=\left[\operatorname{SA}_{1}(z) ; \operatorname{SA}_{2}(z) ; \cdots ; \mathrm{SA}_{k}(z)\right] \mathbf{U}_{m s a} \quad \mathbf{U}_{m s a} \in \mathbb{R}^{k \cdot D_{h} \times D}
+\]</div>
+<h3 id="b-experiment-details">B. Experiment Details<a class="headerlink" href="#b-experiment-details" title="Permanent link">&para;</a></h3>
+<h4 id="b1-training">B.1 Training<a class="headerlink" href="#b1-training" title="Permanent link">&para;</a></h4>
+<p><img alt="" src="../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/tab-3.png" /></p>
+<p>Regularization 是訓練在 ImageNet dataset 的關鍵。Dropout 用在每個 (除了 qkv-projection) dense layer。混合模型使用相同的設定。輸入影像的解析度是 <span class="arithmatex">\(224^2\)</span>。</p>
+<h5 id="b11-fine-tuning">B.1.1 Fine-Tuning<a class="headerlink" href="#b11-fine-tuning" title="Permanent link">&para;</a></h5>
+<p>Optimizer 使用 SGD &amp; 0.9 momentum。在 learning rate 跑了少量的 grid search。為了這麼做，在原本的 training set 分出少量樣本 (10% for Pets and Flowers, 2% for CIFAR, 1% ImageNet) 當作 development set，然後在剩下的資料量進行訓練。</p>
+<blockquote>
+<p>For final results we train on the entire training set and evaluate on the respective test data. For fine-tuning ResNets and hybrid models we use the exact same setup, with the only exception of ImageNet where we add another value 0.06 to the learning rate sweep. Additionally, for ResNets we also run the setup of Kolesnikov et al. (2020) and select the best results across this run and our sweep. Finally, if not mentioned otherwise, all fine-tuning experiments run at 384
+resolution (running fine-tuning at different resolution than training is common practice (Kolesnikov et al., 2020)).</p>
+<p>When transferring ViT models to another dataset, we remove the whole head (two linear layers) and replace it by a single, zero-initialized linear layer outputting the number of classes required by the target dataset. We found this to be a little more robust than simply re-initializing the very last layer.</p>
+<p>For VTAB we follow the protocol in Kolesnikov et al. (2020), and use the same hyperparameter setting for all tasks. We use a learning rate of 0.01 and train for 2500 steps (Tab. 4). We chose this setting by running a small sweep over two learning rates and two schedules, and selecting the setting with the highest VTAB score on the 200-example validation sets. We follow the pre-processing used in Kolesnikov et al. (2020), except that we do not use task-specific input resolutions. Instead we find that Vision Transformer benefits most from a high resolution (384 × 384) for all tasks.</p>
+</blockquote>
+<p><img alt="" src="../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/tab-4.png" /></p>
+<h5 id="b12-self-supervision">B.1.2 Self-Supervision<a class="headerlink" href="#b12-self-supervision" title="Permanent link">&para;</a></h5>
+<blockquote>
+<p>We employ the masked patch prediction objective for preliminary self-supervision experiments. To do so we corrupt 50% of patch embeddings by either replacing their embeddings with a learnable <code>[mask]</code> embedding (80%), a random other patch embedding (10%) or just keeping them as is (10%). This setup is very similar to the one used for language by Devlin et al. (2019). Finally, we predict the 3-bit, mean color (i.e., 512 colors in total) of every corrupted patch using their respective patch representations.</p>
+<p>We trained our self-supervised model for 1M steps (ca. 14 epochs) with batch size 4096 on JFT. We use Adam, with a base learning rate of <span class="arithmatex">\(2·10^{−4}\)</span> , warmup of 10k steps and cosine learning rate decay. As prediction targets for pretraining we tried the following settings: 1) predicting only the mean, 3bit color (i.e., 1 prediction of 512 colors), 2) predicting a 4×4 downsized version of the 16×16 patch with 3bit colors in parallel (i.e., 16 predictions of 512 colors), 3) regression on the full patch using L2 (i.e., 256 regressions on the 3 RGB channels). Surprisingly, we found that all worked quite well, though L2 was slightly worse. We report final results only for option 1) because it has shown best few-shot performance. We also experimented with 15% corruption rate as used by Devlin et al. (2019) but results were also slightly worse on our few-shot metrics.</p>
+<p>Lastly, we would like to remark that our instantiation of masked patch prediction doesn’t require such an enormous amount of pretraining nor a large dataset such as JFT in order to lead to similar performance gains on ImageNet classification. That is, we observed diminishing returns on downstream performance after 100k pretraining steps, and see similar gains when pretraining on ImageNet.</p>
+</blockquote>
+<h3 id="c-additional-results">C. Additional Results<a class="headerlink" href="#c-additional-results" title="Permanent link">&para;</a></h3>
+<p><img alt="" src="../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/tab-6.png" />
+<img alt="" src="../../assets/images/an-image-is-worth-16x16-words-transformers-for-image-recognition-at-scale/figures/5.png" /></p>
+<blockquote>
+<p>We report detailed results corresponding to the figures presented in the paper. Table 5 corresponds to Figure 3 from the paper and shows transfer performance of different ViT models pre-trained on datasets of increasing size: ImageNet, ImageNet-21k, and JFT-300M. Table 6 corresponds to Figure 5 from the paper and shows the transfer performance of ViT, ResNet, and hybrid models of varying size, as well as the estimated computational cost of their pre-training.</p>
+</blockquote>
+
+              
+
+  <!-- Giscus -->
+  <h2 id="__comments">Comments</h2>
+
+  <script src="https://giscus.app/client.js"
+      data-repo="aquastripe/paper-notes"
+      data-repo-id="MDEwOlJlcG9zaXRvcnkzMjg4MzkzMjI="
+      data-category="Announcements"
+      data-category-id="DIC_kwDOE5mwms4CO96G"
+      data-mapping="title"
+      data-reactions-enabled="1"
+      data-emit-metadata="0"
+      data-input-position="bottom"
+      data-theme="light"
+      data-lang="zh-TW"
+      crossorigin="anonymous"
+      async>
+  </script>
+
+  <!-- Reload on palette change -->
+  <script>
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object")
+      if (palette.color.scheme === "slate") {
+        var giscus = document.querySelector("script[src*=giscus]")
+        giscus.setAttribute("data-theme", "dark") 
+      }
+
+    /* Register event handlers after documented loaded */
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate" ? "dark" : "light"
+
+          /* Instruct Giscus to change theme */
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../../tags/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Tags" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Tags
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../../2021/exploring-simple-siamese-representation-learning/" class="md-footer__link md-footer__link--next" aria-label="Next: Exploring Simple Siamese Representation Learning (SimSiam)" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Exploring Simple Siamese Representation Learning (SimSiam)
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy 2022 Hao-Ting Li. Content on this site is licensed under a <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a6c66575.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
