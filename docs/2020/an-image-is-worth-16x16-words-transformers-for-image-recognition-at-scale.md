@@ -137,7 +137,7 @@ Fine-tune 作法：移除 prediction head，然後加入以 0 初始化的 $D \t
 Vision Transformer 可以處理任意的序列長度，但是 pre-trained position embeddings 可能就會失去意義。所以這裡根據原本影像的解析度，使用 2D interpolation 計算 pre-trained position embeddings。
 > Note that this resolution adjustment and patch extraction are the only points at which an inductive bias about the 2D structure of the images is manually injected into the Vision Transformer.
 
-注意：解析度的調整和擷取 patch 的方式是這個 Vision Transformer 模型中唯一對於 2D 影像結構的**歸納偏誤（Inductive Bias）**。
+注意：解析度的調整和擷取 patch 的方式是這個 Vision Transformer 模型中唯一對於 2D 影像結構的 **歸納偏誤（Inductive Bias）**。
 
 !!! Inductive Bias
 

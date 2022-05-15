@@ -32,17 +32,19 @@ tags:
 ## Pseudo Labels
 
 Pseudo Labels 是一種 self-training 方法，其作法如下：
+
 1. 準備兩個模型，一個是 teacher network，另一個是 student network。
 2. 使用有 labels 的 dataset、或是使用更大的架構，以監督式學習 (supervised learning) 進行訓練 teacher network。
 3. 使用沒有 labels 的 dataset、或是使用更小的架構，以半監督式學習 (semi-supervised learning) 進行訓練 student network。詳細作法如下：
-   1. 將 teacher network 的參數固定，把 unlabeled data 傳入 teacher network 以後將會輸出 teacher network 的預測結果。
-   2. 將 teacher network 的預測結果視為 labels (稱為 pseudo labels)，以監督式學習進行訓練 student network。
+      1. 將 teacher network 的參數固定，把 unlabeled data 傳入 teacher network 以後將會輸出 teacher network 的預測結果。
+      2. 將 teacher network 的預測結果視為 labels (稱為 pseudo labels)，以監督式學習進行訓練 student network。
 
 這樣做的好處是：可以在任意大的 unlabeled dataset 進行訓練。在機器學習任務中，labels 是非常貴的資源，相較之下 unlabeled data 的蒐集更容易些。目前研究有許多 unlabeled dataset 比 labeled dataset 資料量相差超過一個數量級。
 
 ### Drawback
 
 由 teacher network 產生的 pseudo labels，以直覺來看當然不是 100% 準確的。這會造成：
+
 - 如果 pseudo labels 不準確，那 student network 就會用不準確的 labels 進行訓練，想當然的結果就會不好。想想這句話："Garbage in, garbage out." 
 - Student network 的結果無法明顯的好過 teacher network。
 
@@ -65,7 +67,7 @@ Pseudo Labels 是一種 self-training 方法，其作法如下：
 
 ## Meta Pseudo Labels
 
-這篇方法的主軸在於**如何使 teacher network 可以訓練**。
+這篇方法的主軸在於 **如何使 teacher network 可以訓練** 。
 
 ### Overview
 
@@ -101,6 +103,7 @@ $$
 $$
 
 其中：
+
 - Pseudo target $T(x_u; θ_T)$ 是由 pre-trained teacher network 產生，其參數 $θ$ 是固定的。
 
 (數學式解讀：在 unlabeled dataset 中進行訓練時，其 CE 的期望值定義為一個以 teacher 和 student network 的參數作為輸入的函數。)
@@ -139,6 +142,7 @@ $$
 $$
 
 其中：
+
 - $\eta$: the learning rate
 
 在 Meta Pseudo Labels 中，teacher network 的目標函數如下：
@@ -155,11 +159,12 @@ $$
 $$
 
 Student network 參數更新後可以在 teacher network 中被重複利用：
+
 - Student: 取出一個 batch 的 unlabeled data，然後傳入 student 和 teacher network 取得預測結果。將 teacher network 的預測結果作為 pseudo labels 來計算 loss，並更新 student network 的參數：
 
-$$
-θ'_ S = θ_ S − \eta_ S ∇_ {θ_ S} \mathcal{L}_ u(θ_ T , θ_ S)
-$$
+    $$
+    θ'_ S = θ_ S − \eta_ S ∇_ {θ_ S} \mathcal{L}_ u(θ_ T , θ_ S)
+    $$
 
 - Teacher: 取出一個 batch 的 labeled data，然後傳入 student 和 teacher network 取得預測結果。將 student network 的預測結果與 labels (ground-truth) 來計算 loss 並更新 teacher network 的參數：
 
@@ -168,6 +173,7 @@ $$
     $$
 
 接下來還有兩個選擇：teacher network 要輸出 soft pseudo labels 還是 hard pseudo labels：
+
 - Soft pseudo labels: 可行，目標函數是可微分的。
 - Hard pseudo labels: 計算圖較小，這在大型 dataset 的實驗中是必要的。
 
@@ -176,6 +182,7 @@ $$
 ### Teacher's Auxiliary Loss
 
 另外，如果使用輔助 loss 訓練的結果會更好。所以，作者用監督式和半監督式的目標函數進行 teacher network 的訓練：
+
 1. 監督式訓練：在 labeled dataset 上面訓練 teacher network。
 2. 半監督式訓練：在 unlabeled dataset 上面利用 UDA [76] 訓練 teacher network。
 3. 之後，student network 只在 unlabeled dataset 上面訓練，使用 teacher network 產生的 pseudo labels。
@@ -189,6 +196,7 @@ $$
 ## Experiments
 
 總共做了四組實驗：
+
 - Small Scale Experiments
 - CIFAR-10-4K, SVHN-1K, and ImageNet-10% Experiments
 - ResNet-50 Experiment
